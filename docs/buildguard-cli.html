@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildGuard CLI Documentation | Build Flow Labs</title>
+    <meta name="description" content="Technical documentation for the BuildGuard CLI - a Go-based tool for automated policy enforcement, PBOM generation, and software supply chain attestation.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="BuildGuard CLI Documentation | Build Flow Labs">
+    <meta property="og:description" content="Technical docs for the Go-based CLI for automated policy enforcement, PBOM generation, and supply chain attestation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://info.buildflowlabs.com/docs/buildguard-cli.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="BuildGuard CLI Documentation | Build Flow Labs">
+    <meta name="twitter:description" content="Technical docs for the Go-based CLI for automated policy enforcement, PBOM generation, and supply chain attestation.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .terminal-glow { box-shadow: 0 0 40px rgba(56, 189, 248, 0.1); }
+    </style>
+</head>
+<body class="text-slate-100 selection:bg-sky-500/30">
+
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono">
+                BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
+            </a>
+            <div class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="/" class="hover:text-sky-400 transition">Home</a>
+                <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+                <a href="/docs/buildguard-cli.html" class="text-sky-400 transition">Docs</a>
+                <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+            </div>
+            <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+    </nav>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+        <a href="/" class="hover:text-sky-400 transition">Home</a>
+        <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+        <a href="/docs/buildguard-cli.html" class="text-sky-400 transition">Docs</a>
+        <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+    </div>
+    <script>
+        const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+        toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+    </script>
+
+    <div class="max-w-5xl mx-auto px-6 flex gap-12 pt-12">
+
+        <!-- Sidebar Navigation -->
+        <aside class="hidden lg:block w-56 shrink-0 sticky top-20 self-start">
+            <div class="text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-4">Documentation</div>
+            <nav class="space-y-3 text-sm">
+                <a href="#overview" class="block text-slate-400 hover:text-sky-400 transition">Overview</a>
+                <a href="#installation" class="block text-slate-400 hover:text-sky-400 transition">Installation</a>
+                <a href="#commands" class="block text-slate-400 hover:text-sky-400 transition">Commands</a>
+                <a href="#audit" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard audit</a>
+                <a href="#sign" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard sign</a>
+                <a href="#policy" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard policy</a>
+                <a href="#pbom" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard pbom</a>
+                <a href="#check" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard check</a>
+                <a href="#configuration" class="block text-slate-400 hover:text-sky-400 transition">Configuration</a>
+                <a href="#examples" class="block text-slate-400 hover:text-sky-400 transition">Examples</a>
+            </nav>
+        </aside>
+
+        <!-- Main Documentation Content -->
+        <main class="flex-1 pb-32 min-w-0">
+            <header class="mb-16">
+                <div class="text-sky-500 mono text-xs font-bold uppercase tracking-widest mb-4">// Technical Documentation</div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">BuildGuard CLI</h1>
+                <p class="text-slate-400 text-lg">v1.0.0 &mdash; The Sovereign Auditor</p>
+            </header>
+
+            <!-- Overview -->
+            <section id="overview" class="mb-16">
+                <h2 class="text-2xl font-bold mb-4 text-slate-100">Overview</h2>
+                <p class="text-slate-400 leading-relaxed mb-4">
+                    BuildGuard is a standalone, Go-based CLI designed for high-assurance environments. It provides a unified interface for software supply chain integrity&mdash;validating build environments, enforcing policies, generating PBOMs, and signing artifacts.
+                </p>
+                <p class="text-slate-400 leading-relaxed">
+                    Unlike traditional security scanners that operate after the fact, BuildGuard integrates at the <strong class="text-sky-400">Pre-flight</strong>, <strong class="text-sky-400">Runtime</strong>, and <strong class="text-sky-400">Attestation</strong> phases of your CI/CD pipeline. It doesn't just scan; it attests, signs, and enforces.
+                </p>
+            </section>
+
+            <!-- Installation -->
+            <section id="installation" class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 text-slate-100">Installation</h2>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
+                    <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800 flex gap-2 items-center">
+                        <div class="w-2 h-2 rounded-full bg-slate-700"></div>
+                        <div class="w-2 h-2 rounded-full bg-slate-700"></div>
+                        <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                        <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">terminal</span>
+                    </div>
+                    <div class="p-6 mono text-sm text-slate-400">
+                        <div class="text-slate-500"># Install via Build Flow Labs registry</div>
+                        <div class="text-sky-400">curl -sSfL https://get.buildflowlabs.io/install.sh | sh</div>
+                        <div class="text-slate-500 mt-4"># Verify installation</div>
+                        <div class="text-sky-400">buildguard --version</div>
+                        <div class="text-slate-300 mt-1">buildguard v1.0.0 (go1.22, linux/amd64)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Commands -->
+            <section id="commands" class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 text-slate-100">Commands</h2>
+
+                <!-- audit -->
+                <div id="audit" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                    <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard audit</h3>
+                    <p class="text-slate-400 mb-4">Scans your repository for CI configuration vulnerabilities before you push. Analyzes workflow YAML files for security anti-patterns.</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                        <div class="text-slate-500"># Usage</div>
+                        <div>buildguard audit --path ./.github/workflows</div>
+                    </div>
+                    <div class="text-sm text-slate-500">
+                        <strong class="text-slate-300">Checks performed:</strong>
+                        <ul class="mt-2 space-y-1 ml-4">
+                            <li>&bull; OIDC token usage validation</li>
+                            <li>&bull; Unpinned action detection</li>
+                            <li>&bull; Over-privileged token identification</li>
+                            <li>&bull; Shell-injection risk analysis</li>
+                            <li>&bull; Secret exposure scanning</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- sign -->
+                <div id="sign" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                    <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard sign</h3>
+                    <p class="text-slate-400 mb-4">Generates the PBOM and signs the build artifact using Sigstore/Cosign. Produces a cryptographically signed JSON file containing the chain of custody.</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                        <div class="text-slate-500"># Usage</div>
+                        <div>buildguard sign --artifact ./dist/app --out ./dist/pbom.json</div>
+                    </div>
+                    <div class="text-sm text-slate-500">
+                        <strong class="text-slate-300">Flags:</strong>
+                        <ul class="mt-2 space-y-1 ml-4">
+                            <li>&bull; <code class="mono text-sky-400/80">--artifact</code> &mdash; Path to the build artifact to sign</li>
+                            <li>&bull; <code class="mono text-sky-400/80">--out</code> &mdash; Output path for the PBOM attestation file</li>
+                            <li>&bull; <code class="mono text-sky-400/80">--key</code> &mdash; Optional: path to a custom signing key</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- policy -->
+                <div id="policy" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                    <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard policy check</h3>
+                    <p class="text-slate-400 mb-4">Validates your environment against internal Build Flow Labs standards or custom Rego policy files.</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                        <div class="text-slate-500"># Usage</div>
+                        <div>buildguard policy check --rego ./policies/nist-800-161.rego</div>
+                    </div>
+                    <div class="text-sm text-slate-500">
+                        <strong class="text-slate-300">Flags:</strong>
+                        <ul class="mt-2 space-y-1 ml-4">
+                            <li>&bull; <code class="mono text-sky-400/80">--rego</code> &mdash; Path to custom Rego policy file</li>
+                            <li>&bull; <code class="mono text-sky-400/80">--strict</code> &mdash; Fail on warnings (default: fail on errors only)</li>
+                            <li>&bull; <code class="mono text-sky-400/80">--output</code> &mdash; Output format: json, table, or summary</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- pbom -->
+                <div id="pbom" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                    <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard pbom</h3>
+                    <p class="text-slate-400 mb-4">Generates a Pipeline Bill of Materials by scanning the current CI environment, capturing runner metadata, toolchain versions, and environment context.</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                        <div class="text-slate-500"># Generate a standalone PBOM</div>
+                        <div>buildguard pbom --generate --path ./pipelines</div>
+                        <div class="mt-2 text-slate-500"># Generate and attach to an artifact</div>
+                        <div>buildguard pbom --generate --attach ./dist/app</div>
+                    </div>
+                    <div class="text-sm text-slate-500">
+                        <strong class="text-slate-300">Captured metadata:</strong>
+                        <ul class="mt-2 space-y-1 ml-4">
+                            <li>&bull; Git SHA and branch</li>
+                            <li>&bull; Runner UUID and environment type</li>
+                            <li>&bull; OIDC subject identity</li>
+                            <li>&bull; Toolchain versions (Go, Node, Python, etc.)</li>
+                            <li>&bull; Active policy rules and results</li>
+                            <li>&bull; Timestamp and build duration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- check -->
+                <div id="check" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                    <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard check</h3>
+                    <p class="text-slate-400 mb-4">Full enterprise-mode audit combining policy evaluation, PBOM generation, and attestation signing in a single execution.</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                        <div class="text-slate-500"># Full enterprise audit</div>
+                        <div>buildguard check --mode enterprise --pbom-enabled</div>
+                        <div class="mt-2 text-slate-500"># Target a specific repository</div>
+                        <div>buildguard check --target github.com/org/repo</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Configuration -->
+            <section id="configuration" class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 text-slate-100">Configuration</h2>
+                <p class="text-slate-400 mb-6">BuildGuard reads from a <code class="mono text-sky-400/80">.buildguard.yaml</code> file in your repository root:</p>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
+                    <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800">
+                        <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">.buildguard.yaml</span>
+                    </div>
+                    <div class="p-6 mono text-xs text-slate-400 leading-6">
+                        <div class="text-slate-500"># BuildGuard Configuration</div>
+                        <div><span class="text-sky-400">version</span>: "1.0"</div>
+                        <div><span class="text-sky-400">mode</span>: enterprise</div>
+                        <div></div>
+                        <div><span class="text-sky-400">policies</span>:</div>
+                        <div>  <span class="text-sky-400">path</span>: ./policies/</div>
+                        <div>  <span class="text-sky-400">strict</span>: true</div>
+                        <div></div>
+                        <div><span class="text-sky-400">pbom</span>:</div>
+                        <div>  <span class="text-sky-400">enabled</span>: true</div>
+                        <div>  <span class="text-sky-400">output</span>: ./dist/pbom.json</div>
+                        <div>  <span class="text-sky-400">sign</span>: true</div>
+                        <div></div>
+                        <div><span class="text-sky-400">sbom</span>:</div>
+                        <div>  <span class="text-sky-400">format</span>: cyclonedx</div>
+                        <div>  <span class="text-sky-400">output</span>: ./dist/sbom.json</div>
+                        <div></div>
+                        <div><span class="text-sky-400">runners</span>:</div>
+                        <div>  <span class="text-sky-400">require_ephemeral</span>: true</div>
+                        <div>  <span class="text-sky-400">require_oidc</span>: true</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Examples -->
+            <section id="examples" class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 text-slate-100">Examples</h2>
+
+                <h3 class="text-lg font-bold mb-4 text-slate-200">GitHub Actions Integration</h3>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow mb-8">
+                    <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800">
+                        <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">.github/workflows/buildguard.yml</span>
+                    </div>
+                    <div class="p-6 mono text-xs text-slate-400 leading-6">
+                        <div><span class="text-sky-400">name</span>: BuildGuard Audit</div>
+                        <div><span class="text-sky-400">on</span>: [push, pull_request]</div>
+                        <div><span class="text-sky-400">jobs</span>:</div>
+                        <div>  <span class="text-sky-400">audit</span>:</div>
+                        <div>    <span class="text-sky-400">runs-on</span>: ubuntu-latest</div>
+                        <div>    <span class="text-sky-400">permissions</span>:</div>
+                        <div>      <span class="text-sky-400">id-token</span>: write</div>
+                        <div>      <span class="text-sky-400">contents</span>: read</div>
+                        <div>    <span class="text-sky-400">steps</span>:</div>
+                        <div>      - <span class="text-sky-400">uses</span>: actions/checkout@v4</div>
+                        <div>      - <span class="text-sky-400">name</span>: Install BuildGuard</div>
+                        <div>        <span class="text-sky-400">run</span>: curl -sSfL https://get.buildflowlabs.io/install.sh | sh</div>
+                        <div>      - <span class="text-sky-400">name</span>: Run Audit</div>
+                        <div>        <span class="text-sky-400">run</span>: buildguard check --mode enterprise --pbom-enabled</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="border-t border-slate-800 py-12 px-6 bg-slate-950 text-center">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="mono text-[10px] text-slate-600 uppercase tracking-[0.2em] hover:text-sky-400 transition">
+                &larr; Build Flow Labs
+            </a>
+            <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">&copy; 2026 A.O.E. Holdings Group LLC</span>
+        </div>
+    </footer>
+
+</body>
+</html>

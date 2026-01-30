@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Verifiable Pipeline | Build Flow Labs Whitepaper</title>
+    <meta name="description" content="Implementing Policy-as-Code and PBOM for Sovereign Software Supply Chains. A technical framework by Build Flow Labs.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="The Verifiable Pipeline | Build Flow Labs Whitepaper">
+    <meta property="og:description" content="Implementing Policy-as-Code and PBOM for Sovereign Software Supply Chains.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://info.buildflowlabs.com/whitepapers/sovereign-pipeline.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Verifiable Pipeline | Build Flow Labs Whitepaper">
+    <meta name="twitter:description" content="Implementing Policy-as-Code and PBOM for Sovereign Software Supply Chains.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .prose { max-width: 65ch; line-height: 1.85; color: #94a3b8; }
+        .prose h2 { color: #f1f5f9; font-weight: 800; font-size: 1.75rem; margin-top: 3.5rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .prose h3 { color: #e2e8f0; font-weight: 700; font-size: 1.25rem; margin-top: 2.5rem; margin-bottom: 0.75rem; }
+        .prose p { margin-bottom: 1.5rem; font-size: 1.0625rem; }
+        .prose strong { color: #38bdf8; font-weight: 600; }
+        .prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        .prose ul { list-style: none; padding: 0; }
+        .prose ul li { padding-left: 1.5rem; position: relative; margin-bottom: 0.75rem; }
+        .prose ul li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; background: #38bdf8; border-radius: 50%; }
+        .prose ol li { margin-bottom: 0.75rem; color: #94a3b8; }
+        .prose blockquote { border-left: 3px solid #38bdf8; padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: #cbd5e1; }
+        .prose table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
+        .prose th { text-align: left; color: #e2e8f0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.75rem 1rem; border-bottom: 2px solid #1e293b; }
+        .prose td { padding: 0.75rem 1rem; border-bottom: 1px solid #1e293b; font-size: 0.9rem; }
+        .prose code { font-family: 'JetBrains Mono', monospace; background: rgba(56, 189, 248, 0.1); color: #7dd3fc; padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; }
+        @media print {
+            body { background: white; color: #1e293b; }
+            .prose { color: #334155; }
+            .prose h2, .prose h3 { color: #0f172a; }
+            .prose strong { color: #0369a1; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body class="text-slate-300 selection:bg-sky-500/30">
+
+    <!-- Nav -->
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4 no-print">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono text-slate-100">
+                BUILD<span class="text-sky-400">FLOW</span>LABS
+            </a>
+            <div class="hidden sm:flex items-center gap-6">
+                <a href="/" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-sky-400 transition">&larr; Home</a>
+                <button onclick="window.print()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Save as PDF</button>
+            </div>
+            <button id="menu-toggle" class="sm:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+        <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold no-print">
+            <a href="/" class="hover:text-sky-400 transition">Home</a>
+            <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+            <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+            <button onclick="closeMobileMenu();window.print()" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Save as PDF</button>
+        </div>
+        <script>
+            const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+            toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+            function closeMobileMenu(){o=false;menu.classList.add('hidden');menu.classList.remove('flex');b1.style.transform='';b2.style.opacity='1';b3.style.transform='';}
+        </script>
+
+    <main class="max-w-4xl mx-auto px-6 py-20">
+
+        <!-- Title Page -->
+        <header class="mb-20 pb-20 border-b border-slate-800">
+            <div class="text-sky-500 mono text-xs font-bold uppercase tracking-widest mb-6">Build Flow Labs // Research Division</div>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight mb-8">
+                The Verifiable Pipeline
+            </h1>
+            <p class="text-2xl text-slate-400 italic mb-10 leading-relaxed">
+                Implementing Policy-as-Code and PBOM for Sovereign Software Supply Chains
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                    <div class="text-[10px] text-slate-600 mono uppercase tracking-widest mb-1">Author</div>
+                    <div class="text-slate-300">Build Flow Labs<br>Research Division</div>
+                </div>
+                <div>
+                    <div class="text-[10px] text-slate-600 mono uppercase tracking-widest mb-1">Published</div>
+                    <div class="text-slate-300">January 2026</div>
+                </div>
+                <div>
+                    <div class="text-[10px] text-slate-600 mono uppercase tracking-widest mb-1">Subject</div>
+                    <div class="text-slate-300">Supply Chain Security</div>
+                </div>
+                <div>
+                    <div class="text-[10px] text-slate-600 mono uppercase tracking-widest mb-1">Classification</div>
+                    <div class="text-slate-300">Public Release</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Table of Contents -->
+        <nav class="mb-20 p-8 border border-slate-800 rounded-2xl bg-slate-900/30">
+            <h2 class="text-lg font-bold text-slate-200 mb-6 mono uppercase tracking-widest text-sm">Table of Contents</h2>
+            <ol class="space-y-3 text-slate-400">
+                <li><a href="#abstract" class="hover:text-sky-400 transition">1. Abstract</a></li>
+                <li><a href="#introduction" class="hover:text-sky-400 transition">2. Introduction: The CI/CD Sovereignty Crisis</a></li>
+                <li><a href="#transparency-gap" class="hover:text-sky-400 transition">3. The Transparency Gap</a></li>
+                <li><a href="#architecture" class="hover:text-sky-400 transition">4. Technical Architecture: How BuildGuard Secures the Flow</a></li>
+                <li><a href="#pbom-framework" class="hover:text-sky-400 transition">5. The PBOM Framework</a></li>
+                <li><a href="#sovereign-pipeline" class="hover:text-sky-400 transition">6. The Sovereign Pipeline: Reference Architecture</a></li>
+                <li><a href="#certified-stack" class="hover:text-sky-400 transition">7. The Certified Technology Stack</a></li>
+                <li><a href="#business-impact" class="hover:text-sky-400 transition">8. Business Impact</a></li>
+                <li><a href="#conclusion" class="hover:text-sky-400 transition">9. Conclusion</a></li>
+            </ol>
+        </nav>
+
+        <!-- Body -->
+        <article class="prose mx-auto">
+
+            <!-- 1. Abstract -->
+            <section id="abstract">
+                <h2>1. Abstract</h2>
+                <p>As software delivery accelerates, the traditional focus on Software Bill of Materials (SBOM) has proven insufficient in defending against sophisticated supply chain attacks. While an SBOM identifies <strong>what</strong> is in a software package, it fails to verify <strong>how</strong> that package was constructed.</p>
+                <p>This whitepaper introduces the <strong>Pipeline Bill of Materials (PBOM)</strong>&mdash;a cryptographically verifiable record of the build environment, toolchain, and chain-of-custody. We present the BuildGuard framework as a reference implementation for organizations seeking to move from implicit trust to verified integrity.</p>
+                <p>Key objectives of this paper:</p>
+                <ul>
+                    <li><strong>The Transparency Gap:</strong> Why current CI/CD architectures act as "security black boxes" where ephemeral build environments introduce unverified variables into production code.</li>
+                    <li><strong>Enforcement via BuildGuard:</strong> A "Guardrails-over-Gates" approach using Rego-based policy-as-code that enforces NIST 800-161 standards without sacrificing developer velocity.</li>
+                    <li><strong>The PBOM Framework:</strong> A technical schema for capturing build-time metadata, including runner attestation, OIDC-based identity verification, and ephemeral environment snapshots.</li>
+                    <li><strong>Sovereign Delivery:</strong> A reference architecture for a self-healing, self-auditing delivery lifecycle that treats security compliance as a compiled-in feature.</li>
+                </ul>
+            </section>
+
+            <!-- 2. Introduction -->
+            <section id="introduction">
+                <h2>2. Introduction: The CI/CD Sovereignty Crisis</h2>
+                <p>In the current landscape of rapid software delivery, the "black box" nature of CI/CD pipelines has become the weakest link in the enterprise security posture. While organizations have spent the last decade perfecting <strong>what</strong> they build, they have largely ignored <strong>how</strong> it is built.</p>
+
+                <h3>The Illusion of Security in Modern Pipelines</h3>
+                <p>Standard security practices have historically focused on Static (SCA) and Dynamic (DAST) analysis of code. However, the rise of sophisticated attacks&mdash;such as the SolarWinds and Codecov breaches&mdash;demonstrates that an attacker does not need to compromise your source code to compromise your software. They only need to compromise the environment that compiles it.</p>
+                <p>Modern CI/CD workflows, specifically those relying on ephemeral GitHub Actions runners or shared GitLab executors, introduce a series of unverified variables:</p>
+                <ul>
+                    <li><strong>The Shadow Toolchain:</strong> Hidden dependencies and pre-installed binaries on build runners that are not tracked in your SBOM.</li>
+                    <li><strong>The Secret Sprawl:</strong> Over-privileged OIDC tokens and long-lived secrets that provide an invisible "backdoor" to production environments.</li>
+                    <li><strong>The Policy Gap:</strong> Compliance checks that happen too late in the process, forcing developers to choose between security and velocity.</li>
+                </ul>
+
+                <h3>From "Trust Me" to "Prove It"</h3>
+                <p>The industry is suffering from a <strong>Chain-of-Custody crisis</strong>. An SBOM tells you the ingredients, but it doesn't tell you if the chef was compromised or if the kitchen was clean. To achieve true software sovereignty, organizations must move toward a model of verifiable integrity.</p>
+                <p>This requires a shift in the mental model of engineering enablement:</p>
+                <ul>
+                    <li><strong>Security as Code:</strong> Compliance must be written in the same language as the infrastructure, using Rego and OPA to create immutable guardrails.</li>
+                    <li><strong>The Pipeline as a Product:</strong> The CI/CD engine must be treated with the same rigor as the customer-facing application, requiring its own hardened "Golden Images" and audited configurations.</li>
+                    <li><strong>Verifiable Attestation:</strong> Every build must produce a PBOM&mdash;a cryptographically signed receipt that proves exactly which runner, which version of Go, and which security policies were active at the moment of creation.</li>
+                </ul>
+                <p>Build Flow Labs was founded to bridge this gap. By implementing the BuildGuard framework, we transform the pipeline from a liability into a strategic asset&mdash;ensuring that every deployment is not just "successful," but sovereign.</p>
+            </section>
+
+            <!-- 3. Transparency Gap -->
+            <section id="transparency-gap">
+                <h2>3. The Transparency Gap</h2>
+                <p>If an attacker compromises your CI/CD runner&mdash;the "kitchen"&mdash;they don't need to touch your source code. They can inject malicious binaries during the build process, steal OIDC tokens to escalate privileges, or modify the final artifact after the security scans have already passed.</p>
+                <p>Your SBOM will still look perfect. Your vulnerability scanner will show all green. Yet, your software is a Trojan horse.</p>
+                <blockquote>84% of organizations use an SBOM, yet supply chain attacks are up 300%. We are verifying the code, but trusting the pipeline blindly.</blockquote>
+                <p>The fundamental issue is that current tooling answers the wrong question. The question is not "What dependencies does this software contain?" The question is: <strong>"Can I prove that nothing tampered with this software between the developer's commit and its deployment to production?"</strong></p>
+                <p>Without a mechanism to capture and verify the build environment itself, organizations are operating on implicit trust&mdash;a model that sophisticated adversaries have already learned to exploit.</p>
+            </section>
+
+            <!-- 4. Architecture -->
+            <section id="architecture">
+                <h2>4. Technical Architecture: How BuildGuard Secures the Flow</h2>
+                <p>The BuildGuard architecture operates as a <strong>Compliance-as-a-Sidecar</strong> model, ensuring that security is not a "post-build" step but a "during-build" requirement.</p>
+
+                <h3>The Interception Layer</h3>
+                <p>BuildGuard integrates at three critical phases:</p>
+                <ul>
+                    <li><strong>Pre-flight (The Gatekeeper):</strong> Before a runner executes a single line of code, BuildGuard scans the workflow YAML and environment. It evaluates the runner's identity via OIDC (OpenID Connect) and compares the requested tools against a "Known Good" whitelist defined in Rego.</li>
+                    <li><strong>Runtime (The Watchtower):</strong> During the build, BuildGuard monitors for "Process Drift." If a build script attempts to <code>curl</code> an external binary or modify a sensitive system file not defined in the original manifest, the build is immediately terminated.</li>
+                    <li><strong>Attestation (The Notary):</strong> Upon a successful build, BuildGuard aggregates the metadata&mdash;Git SHA, Runner UUID, OIDC Token, and Toolchain Versions&mdash;into a signed PBOM. This file is then bundled with the container image or binary as a verifiable certificate of origin.</li>
+                </ul>
+
+                <h3>Zero-Friction Integration</h3>
+                <p>A key design principle of BuildGuard is <strong>invisible security</strong>. The tool wraps existing CI steps without requiring developers to write additional security YAML or learn new workflows. Compliance becomes a side effect of shipping code, not a separate ticket in the backlog.</p>
+            </section>
+
+            <!-- 5. PBOM Framework -->
+            <section id="pbom-framework">
+                <h2>5. The PBOM Framework</h2>
+                <p>The Pipeline Bill of Materials extends beyond the SBOM by documenting not just the software's ingredients but the entire context of its creation. A PBOM attestation captures:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">build_id</td>
+                            <td>Unique identifier for the build execution</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">git_sha</td>
+                            <td>The exact commit hash that triggered the build</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">git_branch</td>
+                            <td>Source branch</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">trigger_identity</td>
+                            <td>OIDC-verified identity of the user or system that initiated the build</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">runner_id</td>
+                            <td>UUID of the CI runner instance</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">runner_environment</td>
+                            <td>OS, architecture, and whether the runner is ephemeral or persistent</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">toolchain</td>
+                            <td>Exact versions of compilers, runtimes, and build tools used</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">policies_enforced</td>
+                            <td>List of Rego policies evaluated and their pass/fail status</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">sbom_reference</td>
+                            <td>Link to the associated SBOM artifact</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">signature</td>
+                            <td>Cryptographic signature via Sigstore/Cosign</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sky-400 mono text-sm">timestamp</td>
+                            <td>RFC 3339 timestamp of build completion</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Forensic Utility</h3>
+                <p>The PBOM's primary value emerges during incident response. If a container is found to be compromised six months after deployment, the PBOM allows security teams to instantly determine:</p>
+                <ul>
+                    <li>Which human identity triggered the build</li>
+                    <li>Whether the runner environment matched the approved "Golden Image"</li>
+                    <li>Whether any policies were bypassed or failed</li>
+                    <li>The exact compiler and dependency versions active at build time</li>
+                </ul>
+                <p>This transforms post-breach investigation from weeks of forensic archaeology into a single query against the PBOM attestation store.</p>
+            </section>
+
+            <!-- 6. Sovereign Pipeline -->
+            <section id="sovereign-pipeline">
+                <h2>6. The Sovereign Pipeline: Reference Architecture</h2>
+                <p>A "Sovereign Pipeline" is a self-healing, self-auditing delivery lifecycle that treats security compliance as a compiled-in feature rather than an external checkbox. The reference architecture consists of four layers:</p>
+
+                <h3>Layer 1: Identity</h3>
+                <p>All actors (human and machine) authenticate via OIDC federation. No long-lived secrets exist in the pipeline. Every action is attributable to a verified identity.</p>
+
+                <h3>Layer 2: Environment</h3>
+                <p>Build runners use ephemeral, CIS-hardened "Golden Images" managed by Build Flow Labs templates. Each runner is destroyed after a single build, eliminating the possibility of persistent compromise.</p>
+
+                <h3>Layer 3: Policy</h3>
+                <p>Rego-based policies are evaluated at pre-commit, pre-merge, and pre-deploy gates. Policies are version-controlled and treated as first-class infrastructure, subject to the same review and testing processes as application code.</p>
+
+                <h3>Layer 4: Attestation</h3>
+                <p>Every successful build produces a signed PBOM and SBOM. These attestations are stored in an immutable ledger and can be queried during audits or incident response. The attestation layer provides the cryptographic proof that layers 1&ndash;3 were properly enforced.</p>
+            </section>
+
+            <!-- 7. Certified Stack -->
+            <section id="certified-stack">
+                <h2>7. The Certified Technology Stack</h2>
+                <p>To achieve Build Flow Labs certification, a pipeline must utilize this hardened engineering stack:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Layer</th>
+                            <th>Technology</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-slate-200">Language</td>
+                            <td class="text-sky-400 mono text-sm">Go (Golang)</td>
+                            <td>Memory safety, static linking, high-performance CLI</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-200">Policy Engine</td>
+                            <td class="text-sky-400 mono text-sm">OPA / Rego</td>
+                            <td>Decoupled, human-readable compliance rules</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-200">Identity</td>
+                            <td class="text-sky-400 mono text-sm">Sigstore / Cosign</td>
+                            <td>Container signing and PBOM attestation</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-200">Infrastructure</td>
+                            <td class="text-sky-400 mono text-sm">Terraform / OpenTofu</td>
+                            <td>Immutable, reproducible infrastructure</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-200">Secrets</td>
+                            <td class="text-sky-400 mono text-sm">HashiCorp Vault</td>
+                            <td>Dynamic, short-lived credentials</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-200">Orchestration</td>
+                            <td class="text-sky-400 mono text-sm">GitHub Actions</td>
+                            <td>Self-hosted on hardened Golden Images</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 8. Business Impact -->
+            <section id="business-impact">
+                <h2>8. Business Impact</h2>
+
+                <h3>Velocity</h3>
+                <p>By shifting compliance checks left&mdash;into the developer's natural workflow&mdash;organizations can reduce security-related build failures by up to 60%. Developers stop waiting for security review bottlenecks because the guardrails are already in place.</p>
+
+                <h3>Compliance</h3>
+                <p>The Blueprint framework provides out-of-the-box alignment with NIST 800-161, FedRAMP, and SLSA requirements. Organizations can demonstrate compliance through automated attestation rather than manual documentation.</p>
+
+                <h3>Trust</h3>
+                <p>By generating cryptographically signed PBOMs for every artifact, organizations can provide their customers and auditors with a verifiable guarantee that their software is untampered&mdash;from commit to production.</p>
+
+                <h3>Remediation Speed</h3>
+                <p>In the event of a supply chain incident, PBOM attestations enable instant identification of affected artifacts across an entire organization. The "blast radius" of a compromised toolchain can be determined in seconds rather than weeks.</p>
+            </section>
+
+            <!-- 9. Conclusion -->
+            <section id="conclusion">
+                <h2>9. Conclusion</h2>
+                <p>The software industry stands at an inflection point. The SBOM was a necessary first step toward supply chain transparency, but it is not sufficient. To defend against the next generation of supply chain attacks, organizations must verify not just what they ship, but how it was built.</p>
+                <p>By shifting from reactive vulnerability scanning to proactive <strong>Pipeline Integrity</strong>, Build Flow Labs provides a blueprint for organizations to reclaim sovereignty over their software supply chains. The BuildGuard framework and the PBOM standard ensure that every line of code is not only secure but also verifiable from origin to deployment.</p>
+                <blockquote>"If you can't verify the pipeline, you can't trust the product."</blockquote>
+                <p>For inquiries about implementing the Sovereign Pipeline architecture, contact the Build Flow Labs advisory team at <a href="mailto:advisory@buildflowlabs.com" class="text-sky-400 hover:text-sky-300 transition">advisory@buildflowlabs.com</a>.</p>
+            </section>
+
+        </article>
+
+        <!-- CTA -->
+        <div class="mt-20 p-10 bg-sky-500/5 border border-sky-500/20 rounded-3xl text-center no-print">
+            <h3 class="text-2xl font-bold mb-4">Ready to Secure Your Pipeline?</h3>
+            <p class="text-slate-400 mb-6 max-w-lg mx-auto">Implement the Sovereign Pipeline architecture with Build Flow Labs advisory services.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:advisory@buildflowlabs.com?subject=Sovereign%20Pipeline%20Inquiry" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-lg font-bold hover:bg-sky-400 transition inline-block">Book Advisory</a>
+                <a href="/docs/blueprint.html" class="border border-slate-700 hover:border-slate-500 px-8 py-3 rounded-lg font-bold transition inline-block">Explore The Blueprint</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 py-12 px-6 bg-slate-950 mt-20 no-print">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="mono text-[10px] text-slate-600 uppercase tracking-[0.2em] hover:text-sky-400 transition">
+                &larr; Build Flow Labs
+            </a>
+            <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">&copy; 2026 A.O.E. Holdings Group LLC</span>
+        </div>
+    </footer>
+
+</body>
+</html>

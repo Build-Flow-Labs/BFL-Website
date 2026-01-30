@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Laboratory | Build Flow Labs Blog</title>
+    <meta name="description" content="Research logs, technical breakdowns, and insights on software supply chain security, PBOM, and policy-as-code from Build Flow Labs.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="The Laboratory | Build Flow Labs Blog">
+    <meta property="og:description" content="Technical breakdowns and research on software supply chain security, PBOM, and policy-as-code.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://info.buildflowlabs.com/blog/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Laboratory | Build Flow Labs Blog">
+    <meta name="twitter:description" content="Technical breakdowns and research on software supply chain security, PBOM, and policy-as-code.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+    </style>
+</head>
+<body class="text-slate-100 selection:bg-sky-500/30">
+
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono">
+                BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
+            </a>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="/" class="hover:text-sky-400 transition">Home</a>
+                <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+                <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+                <a href="/blog/" class="text-sky-400 transition">Insights</a>
+            </div>
+            <a href="mailto:advisory@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
+            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+    </nav>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+        <a href="/" class="hover:text-sky-400 transition">Home</a>
+        <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+        <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+        <a href="/blog/" class="text-sky-400 transition">Insights</a>
+        <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
+    </div>
+    <script>
+        const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+        toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+    </script>
+
+    <header class="max-w-5xl mx-auto px-6 pt-24 pb-16">
+        <div class="text-sky-500 mono text-xs font-bold uppercase tracking-widest mb-4">// Research Logs</div>
+        <h1 class="text-5xl md:text-6xl font-black tracking-tight mb-6">The Laboratory</h1>
+        <p class="text-xl text-slate-400 max-w-2xl leading-relaxed">
+            Technical breakdowns, research findings, and operational insights on software supply chain security, pipeline integrity, and engineering enablement.
+        </p>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 pb-32">
+        <!-- Featured Post -->
+        <article class="p-10 border border-sky-500/20 rounded-3xl bg-sky-500/5 mb-12 group hover:border-sky-500/40 transition">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="bg-sky-500 text-slate-950 text-[10px] font-black px-3 py-1 rounded-full uppercase">Featured</span>
+                <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">Jan 29, 2026 &middot; 6 min read</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-4 group-hover:text-sky-400 transition leading-tight">
+                <a href="/blog/why-sbom-isnt-enough.html">Why Your SBOM Isn't Enough: The "Clean Kitchen" Problem</a>
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed max-w-3xl">
+                In the wake of Executive Order 14028, the SBOM became the industry's silver bullet. But there is a fatal flaw in this logic. An SBOM is a list of ingredients&mdash;it cannot tell you if the kitchen was compromised.
+            </p>
+            <a href="/blog/why-sbom-isnt-enough.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Read Full Breakdown &rarr;</a>
+        </article>
+
+        <!-- The Integrity Series -->
+        <div class="mb-12">
+            <h3 class="text-slate-500 mono text-xs font-bold uppercase tracking-widest mb-8 border-b border-slate-800 pb-4">The Integrity Series</h3>
+        </div>
+
+        <div class="space-y-8">
+            <article class="p-8 border border-slate-800 rounded-2xl hover:border-sky-500/30 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">Week 01</span>
+                    <span class="text-[10px] text-sky-400 mono uppercase tracking-widest">Published</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-sky-400 transition">
+                    <a href="/blog/why-sbom-isnt-enough.html">Why Your SBOM Isn't Enough: The "Clean Kitchen" Problem</a>
+                </h3>
+                <p class="text-slate-500 text-sm">Understanding why ingredients don't matter if your build environment is toxic.</p>
+            </article>
+
+            <article class="p-8 border border-slate-800 rounded-2xl opacity-60">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">Week 02</span>
+                    <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">Coming Soon</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Defining the PBOM: Tracking Pipeline Chain-of-Custody</h3>
+                <p class="text-slate-600 text-sm">A technical deep dive into the Pipeline Bill of Materials and how it creates verifiable build provenance.</p>
+            </article>
+
+            <article class="p-8 border border-slate-800 rounded-2xl opacity-60">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">Week 03</span>
+                    <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">Coming Soon</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Guardrails, Not Gates: Scaling Compliance in 2026</h3>
+                <p class="text-slate-600 text-sm">How to use OPA/Rego to let developers move fast without breaking security protocols.</p>
+            </article>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 py-12 px-6 bg-slate-950 text-center">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="mono text-[10px] text-slate-600 uppercase tracking-[0.2em] hover:text-sky-400 transition">
+                &larr; Build Flow Labs
+            </a>
+            <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">&copy; 2026 A.O.E. Holdings Group LLC</span>
+        </div>
+    </footer>
+
+</body>
+</html>

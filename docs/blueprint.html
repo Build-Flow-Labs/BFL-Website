@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Blueprint | Build Flow Labs</title>
+    <meta name="description" content="The Blueprint: Enterprise-in-a-Box compliance and DevEx starter kit. Pre-configured CI/CD pipelines, security guardrails, and federal-aligned infrastructure templates.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="The Blueprint | Build Flow Labs">
+    <meta property="og:description" content="Enterprise-in-a-Box: pre-configured CI/CD pipelines, security guardrails, and federal-aligned infrastructure templates.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://info.buildflowlabs.com/docs/blueprint.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Blueprint | Build Flow Labs">
+    <meta name="twitter:description" content="Enterprise-in-a-Box: pre-configured CI/CD pipelines, security guardrails, and federal-aligned infrastructure templates.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .gradient-text { background: linear-gradient(to right, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="text-slate-100 selection:bg-sky-500/30">
+
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono">
+                BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
+            </a>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="/" class="hover:text-sky-400 transition">Home</a>
+                <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+                <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+                <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+            </div>
+            <a href="mailto:advisory@buildflowlabs.com?subject=Blueprint%20Inquiry" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Get The Blueprint</a>
+            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+    </nav>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+        <a href="/" class="hover:text-sky-400 transition">Home</a>
+        <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+        <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+        <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+        <a href="mailto:advisory@buildflowlabs.com?subject=Blueprint%20Inquiry" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Get The Blueprint</a>
+    </div>
+    <script>
+        const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+        toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+    </script>
+
+    <!-- Hero -->
+    <header class="max-w-5xl mx-auto px-6 pt-24 pb-16 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-sky-500/20 bg-sky-500/5 rounded-full">
+            <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Licensed Engineering Framework</span>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6 gradient-text">"The Blueprint"</h1>
+        <p class="text-2xl text-slate-400 mb-4 italic">Enterprise-in-a-Box</p>
+        <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            A pre-configured, federal-aligned bootstrap for GitHub and GitLab. Deploy a compliant, secure engineering environment in days&mdash;not months. Companies buy the framework; we consult on the custom implementation.
+        </p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 pb-32">
+
+        <!-- Three Pillars -->
+        <section class="mb-32">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-10 border border-slate-800 rounded-3xl bg-slate-900/30 hover:border-sky-500/20 transition">
+                    <div class="text-sky-400 mono text-[10px] font-black uppercase tracking-widest mb-6">Pillar 01</div>
+                    <h2 class="text-2xl font-bold mb-6">Hardened CI/CD Foundations</h2>
+                    <ul class="text-slate-500 text-sm space-y-4 leading-relaxed">
+                        <li>
+                            <strong class="text-slate-300 block mb-1">Modular CI Library</strong>
+                            Pre-written, reusable GitHub Actions and GitLab CI templates for Go, Node.js, and Python with automated versioning and changelog generation.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">BuildGuard Integration</strong>
+                            Pre-configured policy-as-code checks that prevent non-compliant code from ever reaching production.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">OIDC Provider Setup</strong>
+                            Templates to securely connect CI/CD to AWS, Azure, and GCP without using long-lived secrets.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-10 border border-sky-500/30 rounded-3xl bg-sky-500/5 hover:border-sky-500/50 transition">
+                    <div class="text-sky-400 mono text-[10px] font-black uppercase tracking-widest mb-6">Pillar 02</div>
+                    <h2 class="text-2xl font-bold mb-6">Security &amp; Compliance Guardrails</h2>
+                    <ul class="text-slate-500 text-sm space-y-4 leading-relaxed">
+                        <li>
+                            <strong class="text-slate-300 block mb-1">PBOM Tracking</strong>
+                            Automated capture of the build environment: CI runner version, build scripts, environment variables, and toolchain metadata for verifiable chain-of-custody.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">SBOM Generation</strong>
+                            Automatic CycloneDX/SPDX files for every build, tracking all software dependencies.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">Secret Scanning &amp; Linting</strong>
+                            Pre-commit hooks that block commits containing sensitive keys or poorly formatted code.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">Vulnerability Gates</strong>
+                            Automated dependency scanning (Trivy/Snyk) that fails builds on Critical/High vulnerabilities.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-10 border border-slate-800 rounded-3xl bg-slate-900/30 hover:border-sky-500/20 transition">
+                    <div class="text-sky-400 mono text-[10px] font-black uppercase tracking-widest mb-6">Pillar 03</div>
+                    <h2 class="text-2xl font-bold mb-6">Engineering Enablement (DevEx)</h2>
+                    <ul class="text-slate-500 text-sm space-y-4 leading-relaxed">
+                        <li>
+                            <strong class="text-slate-300 block mb-1">"Golden Image" Dockerfiles</strong>
+                            Standardized container images hardened to CIS benchmarks for multiple languages.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">Developer Portal Template</strong>
+                            Backstage.io configuration or markdown-based Service Catalog to track every microservice.
+                        </li>
+                        <li>
+                            <strong class="text-slate-300 block mb-1">Ephemeral Environments</strong>
+                            One-click deployment of "Preview" environments for pull request reviews.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="mb-32 border-t border-slate-800 pt-20">
+            <h2 class="text-3xl font-bold mb-12 text-center italic">How It Works</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-sky-500 mono text-4xl font-black mb-4">01</div>
+                    <h3 class="text-lg font-bold mb-2">License</h3>
+                    <p class="text-slate-500 text-sm">Acquire The Blueprint framework for your organization. Receive the full infrastructure-as-code repository.</p>
+                </div>
+                <div>
+                    <div class="text-sky-500 mono text-4xl font-black mb-4">02</div>
+                    <h3 class="text-lg font-bold mb-2">Deploy</h3>
+                    <p class="text-slate-500 text-sm">Bootstrap your GitHub or GitLab environment with pre-configured pipelines, policies, and security guardrails.</p>
+                </div>
+                <div>
+                    <div class="text-sky-500 mono text-4xl font-black mb-4">03</div>
+                    <h3 class="text-lg font-bold mb-2">Customize</h3>
+                    <p class="text-slate-500 text-sm">Engage Build Flow Labs advisory services for custom policy development, architecture reviews, and team enablement.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Standardized Stack -->
+        <section class="mb-32 border-t border-slate-800 pt-20">
+            <h2 class="text-3xl font-bold mb-12 text-center italic">The Certified Stack</h2>
+            <p class="text-slate-500 text-center max-w-2xl mx-auto mb-12">To achieve Build Flow Labs certification, a pipeline must utilize this hardened engineering stack:</p>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-4 border-b border-slate-800 gap-2">
+                    <div>
+                        <span class="text-slate-200 font-bold">Language</span>
+                        <span class="text-slate-600 text-xs ml-2">Primary</span>
+                    </div>
+                    <span class="text-slate-400 mono text-sm">Go (Golang) &mdash; Memory safety, static linking</span>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-4 border-b border-slate-800 gap-2">
+                    <div>
+                        <span class="text-slate-200 font-bold">Policy Engine</span>
+                        <span class="text-slate-600 text-xs ml-2">Enforcement</span>
+                    </div>
+                    <span class="text-slate-400 mono text-sm">Open Policy Agent (OPA) / Rego</span>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-4 border-b border-slate-800 gap-2">
+                    <div>
+                        <span class="text-slate-200 font-bold">Identity</span>
+                        <span class="text-slate-600 text-xs ml-2">Signing</span>
+                    </div>
+                    <span class="text-slate-400 mono text-sm">Sigstore / Cosign</span>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-4 border-b border-slate-800 gap-2">
+                    <div>
+                        <span class="text-slate-200 font-bold">Infrastructure</span>
+                        <span class="text-slate-600 text-xs ml-2">IaC</span>
+                    </div>
+                    <span class="text-slate-400 mono text-sm">Terraform / OpenTofu</span>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-4 border-b border-slate-800 gap-2">
+                    <div>
+                        <span class="text-slate-200 font-bold">Secrets</span>
+                        <span class="text-slate-600 text-xs ml-2">Management</span>
+                    </div>
+                    <span class="text-slate-400 mono text-sm">HashiCorp Vault &mdash; Dynamic, short-lived credentials</span>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-4 gap-2">
+                    <div>
+                        <span class="text-slate-200 font-bold">Orchestration</span>
+                        <span class="text-slate-600 text-xs ml-2">CI/CD</span>
+                    </div>
+                    <span class="text-slate-400 mono text-sm">GitHub Actions (Self-Hosted) on hardened Golden Images</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="text-center py-20 border-t border-slate-800">
+            <h2 class="text-3xl font-bold mb-6">Deploy The Blueprint</h2>
+            <p class="text-slate-500 max-w-lg mx-auto mb-8">Ready to establish a compliant, verifiable engineering environment? Start with The Blueprint or engage our advisory team for a custom implementation.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:advisory@buildflowlabs.com?subject=Blueprint%20License%20Inquiry" class="bg-sky-500 text-slate-950 px-8 py-4 rounded-full font-bold hover:bg-sky-400 transition">Request License</a>
+                <a href="/#consulting" class="border border-slate-800 hover:border-slate-600 px-8 py-4 rounded-full font-bold transition">View Advisory Tiers</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 py-12 px-6 bg-slate-950 text-center">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/" class="mono text-[10px] text-slate-600 uppercase tracking-[0.2em] hover:text-sky-400 transition">
+                &larr; Build Flow Labs
+            </a>
+            <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">&copy; 2026 A.O.E. Holdings Group LLC</span>
+        </div>
+    </footer>
+
+</body>
+</html>

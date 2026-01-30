@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Build Flow Labs | Intelligence-Grade Engineering</title>
+    <title>Build Flow Labs | Intelligence-Grade Engineering Enablement</title>
+    <meta name="description" content="Build Flow Labs provides intelligence-grade engineering enablement, policy-as-code automation, and verifiable software supply chain integrity through BuildGuard and the PBOM framework.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Build Flow Labs | Intelligence-Grade Engineering Enablement">
+    <meta property="og:description" content="Federal-aligned platform patterns and verifiable software supply chains. Policy-as-Code, PBOM, and BuildGuard from an Ex-IC Engineering Manager.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://info.buildflowlabs.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Build Flow Labs | Intelligence-Grade Engineering Enablement">
+    <meta name="twitter:description" content="Federal-aligned platform patterns and verifiable software supply chains. Policy-as-Code, PBOM, and BuildGuard.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -13,153 +23,472 @@
         .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
         .gradient-text { background: linear-gradient(to right, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .section-heading { letter-spacing: 0.2em; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; }
+        .bg-blue-glow { background: radial-gradient(circle at center, rgba(56, 189, 248, 0.04) 0%, transparent 70%); }
     </style>
 </head>
 <body class="text-slate-100 selection:bg-sky-500/30">
 
+    <!-- ========== NAVIGATION ========== -->
     <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-xl font-extrabold tracking-tighter mono">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono">
                 BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
-            </div>
+            </a>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="#mission" class="hover:text-sky-400 transition">Mission</a>
                 <a href="#differentiators" class="hover:text-sky-400 transition">Why Us</a>
+                <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
                 <a href="#product" class="hover:text-sky-400 transition">BuildGuard</a>
                 <a href="#consulting" class="hover:text-sky-400 transition">Advisory</a>
-                <a href="#blog" class="hover:text-sky-400 transition">Labs</a>
+                <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+                <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
             </div>
-            <button class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</button>
+            <a href="mailto:advisory@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
+            <!-- Mobile hamburger -->
+            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
         </div>
     </nav>
 
+    <!-- Mobile menu overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+        <a href="#mission" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Mission</a>
+        <a href="#differentiators" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Why Us</a>
+        <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+        <a href="#product" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BuildGuard</a>
+        <a href="#consulting" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Advisory</a>
+        <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+        <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+        <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        const bar1 = document.getElementById('bar1');
+        const bar2 = document.getElementById('bar2');
+        const bar3 = document.getElementById('bar3');
+        let menuOpen = false;
+        toggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+            bar1.style.transform = menuOpen ? 'rotate(45deg) translate(3px, 3px)' : '';
+            bar2.style.opacity = menuOpen ? '0' : '1';
+            bar3.style.transform = menuOpen ? 'rotate(-45deg) translate(3px, -3px)' : '';
+        });
+        function closeMobileMenu() {
+            menuOpen = false;
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+            bar1.style.transform = '';
+            bar2.style.opacity = '1';
+            bar3.style.transform = '';
+        }
+    </script>
+
+    <!-- ========== HERO / MISSION ========== -->
     <header id="mission" class="relative pt-32 pb-24 px-6 overflow-hidden">
         <div class="max-w-7xl mx-auto relative z-10 text-center md:text-left">
             <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-sky-500/20 bg-sky-500/5 rounded-full">
-                <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Research-Backed Sovereignty</span>
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+                </span>
+                <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Automating Trust. Engineering Compliance.</span>
             </div>
             <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-tight gradient-text">
-                Secure Flow. <br/> Verifiable Integrity.
+                Secure Engineering <br/> Flow for the Modern SDLC.
             </h1>
             <p class="text-xl text-slate-400 max-w-3xl mb-12 leading-relaxed mx-auto md:mx-0">
-                Built on the front lines of global breach remediation and Intelligence Community standards. We don't just secure your pipeline; we make it sovereign.
+                Led by an Ex-Intelligence Community Engineering Manager and Cybersecurity Doctoral candidate, Build Flow Labs sets the standard for federal-aligned platform patterns and verifiable software supply chains.
             </p>
             <div class="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
-                <button class="bg-slate-100 hover:bg-sky-400 text-slate-950 px-10 py-4 rounded-full font-bold transition-all transform hover:scale-105">
-                    Explore BuildGuard
-                </button>
-                <button class="border border-slate-800 hover:border-slate-600 px-10 py-4 rounded-full font-bold transition">
-                    View Advisory Tiers
-                </button>
+                <a href="/docs/blueprint.html" class="bg-slate-100 hover:bg-sky-400 text-slate-950 px-10 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2 group">
+                    Explore The Blueprint
+                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </a>
+                <a href="#consulting" class="border border-slate-800 hover:border-slate-600 px-10 py-4 rounded-full font-bold transition text-center">
+                    Strategic Advisory
+                </a>
             </div>
+        </div>
+        <div class="absolute inset-0 opacity-10 pointer-events-none"
+             style="background-image: radial-gradient(circle at 2px 2px, #1e293b 1px, transparent 0); background-size: 50px 50px;">
         </div>
     </header>
 
+    <!-- ========== TECH STACK MARQUEE ========== -->
+    <div class="border-y border-subtle py-8 mb-0 bg-slate-900/20">
+        <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center md:justify-between gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+            <span class="mono font-bold text-sm tracking-widest italic">#GOLANG</span>
+            <span class="mono font-bold text-sm tracking-widest italic">#REGO/OPA</span>
+            <span class="mono font-bold text-sm tracking-widest italic">#KUBERNETES</span>
+            <span class="mono font-bold text-sm tracking-widest italic">#CI/CD_SEC</span>
+            <span class="mono font-bold text-sm tracking-widest italic">#PBOM</span>
+            <span class="mono font-bold text-sm tracking-widest italic">#NIST_800-161</span>
+        </div>
+    </div>
+
+    <!-- ========== DIFFERENTIATORS ========== -->
     <section id="differentiators" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
-        <div class="grid md:grid-cols-3 gap-12">
+        <div class="text-center mb-20">
+            <p class="section-heading text-sky-500 mb-4">// WHY_BUILD_FLOW_LABS</p>
+            <h2 class="text-4xl font-bold italic">Evidence-Ware, Not Snitch-Ware</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">Most security tools tell you what's wrong. We prove what went right.</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
-                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 01 Invisible Security</div>
-                <h3 class="text-2xl font-bold mb-4">Zero Friction</h3>
+                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 01</div>
+                <h3 class="text-xl font-bold mb-3">Invisible Security</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">
-                    Security shouldn't be a ticket. BuildGuard integrates directly into your Go toolchain, enforcing NIST-level compliance as a side effect of shipping code.
+                    BuildGuard wraps your existing Go builds and CI steps. Compliance happens as a side effect of shipping code, not a separate ticket.
                 </p>
             </div>
             <div>
-                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 02 Forensic Attestation</div>
-                <h3 class="text-2xl font-bold mb-4">Immutable Proof</h3>
+                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 02</div>
+                <h3 class="text-xl font-bold mb-3">Forensic Attestation</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">
-                    Our PBOM (Pipeline Bill of Materials) provides a cryptographically signed "Chain of Custody" for every artifact, proving exactly how, where, and by whom it was built.
+                    Our PBOM creates an immutable audit trail. If a container is compromised 6 months later, prove exactly which human, runner, and compiler produced that layer.
                 </p>
             </div>
             <div>
-                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 03 Rapid Remediation</div>
-                <h3 class="text-2xl font-bold mb-4">Blast Radius Control</h3>
+                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 03</div>
+                <h3 class="text-xl font-bold mb-3">Blast Radius Control</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">
-                    Drawing from real-world breach recovery experience, we enable instant forensic lookups across thousands of repos to identify at-risk toolchains in seconds.
+                    Drawing from real-world breach recovery, we enable instant forensic lookups across thousands of repos to identify at-risk toolchains in seconds.
+                </p>
+            </div>
+            <div>
+                <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 04</div>
+                <h3 class="text-xl font-bold mb-3">Doctorate-Backed</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Every feature is rooted in active D.Sc. Cybersecurity research. The "Labs" in our name means we push the boundary of what's possible.
                 </p>
             </div>
         </div>
     </section>
 
-    <section id="product" class="max-w-7xl mx-auto px-6 py-32 bg-slate-950/40 rounded-3xl border border-subtle">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-                <p class="text-sky-400 mono text-[10px] font-bold uppercase mb-4 tracking-widest">Product Showcase</p>
-                <h2 class="text-4xl font-bold mb-6">BuildGuard CLI: <br/> The Sovereign Auditor</h2>
-                <p class="text-slate-400 mb-8 leading-relaxed">
-                    A standalone, Go-based binary designed for high-assurance environments. It validates the environment, generates the PBOM, and signs the output—all in one zero-dependency execution.
+    <!-- ========== CAPABILITIES STATEMENT (Summary) ========== -->
+    <section id="capabilities" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="grid lg:grid-cols-3 gap-16">
+            <div class="lg:col-span-1">
+                <p class="section-heading text-sky-500 mb-4">// CORE_COMPETENCIES</p>
+                <h3 class="text-4xl font-bold mb-6 italic">Capabilities Statement</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8">
+                    A.O.E. Holdings Group LLC dba Build Flow Labs provides high-assurance engineering enablement for federal and commercial sectors.
                 </p>
-                <div class="grid grid-cols-2 gap-4">
+                <a href="/capabilities/" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">View Full Statement &rarr;</a>
+            </div>
+            <div class="lg:col-span-2 grid md:grid-cols-2 gap-12">
+                <div>
+                    <h4 class="text-slate-200 font-bold mb-3 mono text-sm uppercase tracking-tighter underline decoration-sky-500 decoration-2 underline-offset-8">01. Automated Governance</h4>
+                    <p class="text-slate-500 text-sm">Hardening pipelines through executable guardrails, shifting security from post-hoc audits to build-time enforcement.</p>
+                </div>
+                <div>
+                    <h4 class="text-slate-200 font-bold mb-3 mono text-sm uppercase tracking-tighter underline decoration-sky-500 decoration-2 underline-offset-8">02. Chain of Custody</h4>
+                    <p class="text-slate-500 text-sm">Deployment of Verifiable Pipeline Bill of Materials (PBOM) to ensure artifact integrity from origin to production.</p>
+                </div>
+                <div>
+                    <h4 class="text-slate-200 font-bold mb-3 mono text-sm uppercase tracking-tighter underline decoration-sky-500 decoration-2 underline-offset-8">03. Crisis Remediation</h4>
+                    <p class="text-slate-500 text-sm">Advisory services for major infrastructure breaches, drawing on experience from high-profile remediation efforts.</p>
+                </div>
+                <div>
+                    <h4 class="text-slate-200 font-bold mb-3 mono text-sm uppercase tracking-tighter underline decoration-sky-500 decoration-2 underline-offset-8">04. Federal Alignment</h4>
+                    <p class="text-slate-500 text-sm">Aligning commercial engineering velocity with FedRAMP, NIST, and SLSA security frameworks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BUILDGUARD PRODUCT ========== -->
+    <section id="product" class="max-w-7xl mx-auto px-6 py-32">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+                <p class="section-heading text-sky-500 mb-4">// CORE_PRODUCT</p>
+                <h2 class="text-4xl font-bold mb-6 italic">BuildGuard CLI</h2>
+                <p class="text-slate-400 mb-8 leading-relaxed">
+                    Our Go-based CLI provides a unified interface for supply chain integrity. It doesn't just scan; it attests, signs, and enforces. A standalone binary designed for high-assurance environments.
+                </p>
+                <div class="space-y-4 text-sm mono text-slate-300 mb-8">
+                    <div class="flex gap-4"><span class="text-sky-500">01</span> Automated PBOM/SBOM Generation</div>
+                    <div class="flex gap-4"><span class="text-sky-500">02</span> Rego-based Policy Enforcement</div>
+                    <div class="flex gap-4"><span class="text-sky-500">03</span> OIDC-Identity Attestation via Sigstore</div>
+                    <div class="flex gap-4"><span class="text-sky-500">04</span> Federal Policy Baseline (NIST/FedRAMP)</div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-8">
                     <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
                         <span class="block text-sky-500 font-bold mb-1">D.Sc. Backed</span>
-                        <span class="text-[10px] text-slate-500 uppercase mono">Doctorate Level Rigor</span>
+                        <span class="text-[10px] text-slate-500 uppercase mono">Doctorate-Level Rigor</span>
                     </div>
                     <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
                         <span class="block text-sky-500 font-bold mb-1">Ex-Intel</span>
                         <span class="text-[10px] text-slate-500 uppercase mono">Battle-Tested Design</span>
                     </div>
                 </div>
+                <a href="/docs/buildguard-cli.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">View CLI Documentation &rarr;</a>
             </div>
             <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
-                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex gap-2">
-                    <div class="w-2 h-2 rounded-full bg-red-500/20"></div>
-                    <div class="w-2 h-2 rounded-full bg-amber-500/20"></div>
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
                     <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">buildguard v1.0.0</span>
                 </div>
-                <div class="p-8 mono text-xs text-slate-400 leading-relaxed">
-                    <div class="text-sky-400">$ buildguard pbom --generate</div>
-                    <div>[RUNNER] AWS-Nitro-Enclave (Verified)</div>
-                    <div>[POLICY] NIST-800-161-REV-1 (Compliance: 100%)</div>
-                    <div>[SIG] Attestation signed via Sigstore/OIDC</div>
-                    <div class="text-sky-400 mt-4">✓ Chain of Custody Established.</div>
-                    <div class="text-slate-600 mt-2 italic">// Forensic evidence stored in buildflow_vault.</div>
+                <div class="p-8 mono text-xs text-slate-400 leading-7">
+                    <div class="text-sky-400">$ buildguard check --mode enterprise --pbom-enabled</div>
+                    <div class="mt-2">[INFO] Identifying Pipeline Chain-of-Custody...</div>
+                    <div>[INFO] Analyzing 12 Infrastructure Files...</div>
+                    <div class="text-slate-300 mt-4 font-bold">Policy Evaluation:</div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>rule_enforce_mfa</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>rule_pipeline_attestation</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>rule_secret_scan_pre_commit</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>rule_sbom_cyclonedx</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="text-sky-400 mt-4">Attestation Success: pbom.json generated.</div>
+                    <div class="text-slate-600 mt-2 italic">// Forensic evidence stored. Chain of custody verified.</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="consulting" class="max-w-7xl mx-auto px-6 py-32">
-        <div class="text-center mb-16">
-            <h3 class="text-3xl font-bold italic">Strategic Service Levels</h3>
+    <!-- ========== ENTERPRISE-IN-A-BOX: THE BLUEPRINT ========== -->
+    <section id="blueprint" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="text-center mb-20">
+            <p class="section-heading text-sky-500 mb-4">// THE_BLUEPRINT</p>
+            <h2 class="text-4xl font-bold italic">Enterprise-in-a-Box</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">A pre-configured, federal-aligned bootstrap for GitHub/GitLab. Deploy a compliant engineering environment in days, not months.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/30">
+                <h4 class="text-sky-400 font-bold mb-4 mono text-sm uppercase tracking-wider">Hardened CI/CD</h4>
+                <ul class="text-slate-500 text-sm space-y-3">
+                    <li>Modular GitHub Actions/GitLab CI templates</li>
+                    <li>Built-in BuildGuard policy checks</li>
+                    <li>OIDC provider setup (no long-lived secrets)</li>
+                    <li>Automated versioning &amp; changelog</li>
+                </ul>
+            </div>
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/30">
+                <h4 class="text-sky-400 font-bold mb-4 mono text-sm uppercase tracking-wider">Security Guardrails</h4>
+                <ul class="text-slate-500 text-sm space-y-3">
+                    <li>PBOM chain-of-custody tracking</li>
+                    <li>SBOM generation (CycloneDX/SPDX)</li>
+                    <li>Secret scanning &amp; linting hooks</li>
+                    <li>Vulnerability gates (Trivy/Snyk)</li>
+                </ul>
+            </div>
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/30">
+                <h4 class="text-sky-400 font-bold mb-4 mono text-sm uppercase tracking-wider">DevEx Enablement</h4>
+                <ul class="text-slate-500 text-sm space-y-3">
+                    <li>CIS-hardened "Golden Image" Dockerfiles</li>
+                    <li>Developer Portal / Service Catalog</li>
+                    <li>Ephemeral preview environments</li>
+                    <li>Standardized onboarding toolkit</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-12">
+            <a href="/docs/blueprint.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">View Full Blueprint &rarr;</a>
+        </div>
+    </section>
+
+    <!-- ========== CONSULTING TIERS ========== -->
+    <section id="consulting" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="text-center mb-20">
+            <p class="section-heading text-sky-500 mb-4">// ADVISORY_TIERS</p>
+            <h2 class="text-4xl font-bold italic">Strategic Service Levels</h2>
+            <p class="text-slate-500 mt-4">Expertise on demand to harden your delivery lifecycle.</p>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
-            <div class="p-8 border border-slate-800 rounded-3xl bg-slate-900/30 hover:border-sky-500/30 transition">
+            <div class="p-8 border border-slate-800 rounded-3xl bg-slate-900/30 hover:border-sky-500/30 transition group">
+                <div class="text-sky-400 mono text-[10px] font-black uppercase mb-4 tracking-widest">Tier 01</div>
                 <h4 class="text-xl font-bold mb-4">Foundational Sprint</h4>
-                <p class="text-slate-500 text-sm mb-6">A 2-week transformation to establish your first compliant, verifiable pipeline.</p>
-                <ul class="text-[10px] text-slate-600 mono space-y-2 uppercase">
+                <p class="text-slate-500 text-sm mb-6">Best for startups and scale-ups. Rapid deployment of "The Blueprint" to establish your first compliant, verifiable pipeline.</p>
+                <ul class="text-[10px] text-slate-600 mono space-y-2 uppercase tracking-widest mb-8">
+                    <li>+ Pipeline Hardening</li>
                     <li>+ SBOM Automation</li>
+                    <li>+ BuildGuard Basics</li>
                     <li>+ Security Gating</li>
                 </ul>
+                <a href="mailto:advisory@buildflowlabs.com?subject=Foundational%20Sprint%20Inquiry" class="block w-full py-3 rounded-xl border border-slate-700 text-xs font-bold uppercase mono text-center group-hover:bg-slate-100 group-hover:text-slate-950 transition">Get Started</a>
             </div>
-            <div class="p-8 border border-sky-500/40 rounded-3xl bg-sky-500/5 relative scale-105">
+            <div class="p-8 border border-sky-500/40 rounded-3xl bg-sky-500/5 relative">
                 <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-sky-500 text-slate-950 text-[10px] font-black px-4 py-1 rounded-full uppercase italic tracking-tighter">Enterprise Standard</div>
+                <div class="text-sky-400 mono text-[10px] font-black uppercase mb-4 tracking-widest">Tier 02</div>
                 <h4 class="text-xl font-bold mb-4">Platform Transformation</h4>
-                <p class="text-slate-500 text-sm mb-6">Deep advisory for scaling teams requiring custom Policy-as-Code and DevEx hardening.</p>
-                <button class="w-full py-3 bg-sky-500 text-slate-950 font-bold uppercase text-xs rounded-xl">Request Advisory</button>
+                <p class="text-slate-500 text-sm mb-6">Architecture-level advisory for scaling organizations migrating to modern, high-velocity engineering standards.</p>
+                <ul class="text-[10px] text-slate-600 mono space-y-2 uppercase tracking-widest mb-8">
+                    <li>+ Architecture Review</li>
+                    <li>+ Custom Policy-as-Code</li>
+                    <li>+ Developer Experience Audit</li>
+                    <li>+ DevEx Hardening</li>
+                </ul>
+                <a href="mailto:advisory@buildflowlabs.com?subject=Platform%20Transformation%20Inquiry" class="block w-full py-3 bg-sky-500 text-slate-950 font-bold uppercase text-xs rounded-xl text-center hover:bg-sky-400 transition">Request Advisory</a>
             </div>
-            <div class="p-8 border border-slate-800 rounded-3xl bg-slate-900/30 hover:border-sky-500/30 transition">
-                <h4 class="text-xl font-bold mb-4">High-Trust Advisory</h4>
-                <p class="text-slate-500 text-sm mb-6">NIST/FedRAMP alignment for federal sectors. Forensic-grade supply chain audits.</p>
-                <ul class="text-[10px] text-slate-600 mono space-y-2 uppercase">
-                    <li>+ Advanced PBOM</li>
+            <div class="p-8 border border-slate-800 rounded-3xl bg-slate-900/30 hover:border-sky-500/30 transition group">
+                <div class="text-sky-400 mono text-[10px] font-black uppercase mb-4 tracking-widest">Tier 03</div>
+                <h4 class="text-xl font-bold mb-4">High-Trust Enterprise</h4>
+                <p class="text-slate-500 text-sm mb-6">For organizations in federal or highly regulated spaces requiring absolute chain-of-custody and forensic-grade audits.</p>
+                <ul class="text-[10px] text-slate-600 mono space-y-2 uppercase tracking-widest mb-8">
+                    <li>+ NIST 800-161 / FedRAMP Alignment</li>
+                    <li>+ Advanced PBOM Tooling</li>
+                    <li>+ Dedicated Engineering Support</li>
                     <li>+ Audit Forensics</li>
                 </ul>
+                <a href="mailto:advisory@buildflowlabs.com?subject=High-Trust%20Enterprise%20Inquiry" class="block w-full py-3 rounded-xl border border-slate-700 text-xs font-bold uppercase mono text-center group-hover:bg-slate-100 group-hover:text-slate-950 transition">Enterprise Inquiry</a>
             </div>
         </div>
     </section>
 
-    <footer class="border-t border-slate-800 py-20 px-6 bg-slate-950 text-center">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-xl font-black mono mb-6 tracking-widest">BUILD<span class="text-sky-400">FLOW</span>LABS</div>
-            <div class="text-[10px] text-slate-600 mono uppercase tracking-[0.4em] mb-8">Automating Trust // Engineering Sovereignty</div>
-            <div class="flex justify-center space-x-8 text-[10px] font-bold text-slate-500 mono uppercase">
-                <a href="#" class="hover:text-sky-400">Capabilities</a>
-                <a href="#" class="hover:text-sky-400">Blog</a>
-                <a href="#" class="hover:text-sky-400">GitHub</a>
+    <!-- ========== FOUNDER / THE LABORATORY ========== -->
+    <section id="founder" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="bg-gradient-to-b from-slate-900/50 to-transparent p-12 rounded-3xl border border-subtle">
+            <div class="max-w-3xl">
+                <p class="section-heading text-sky-500 mb-6">// THE_LABORATORY</p>
+                <h3 class="text-4xl font-bold mb-8 italic">"Building the systems that defend the systems."</h3>
+                <p class="text-slate-300 text-lg leading-relaxed mb-10">
+                    Build Flow Labs was founded with a single mission: to apply Intelligence-grade rigor to commercial software delivery. Our founder balances the technical leadership of an Engineering Manager with the cutting-edge research of a D.Sc. in Cybersecurity candidate at The George Washington University.
+                </p>
+                <div class="grid sm:grid-cols-3 gap-6">
+                    <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                        <div class="text-sky-500 font-bold mb-1">Ex-Intel Community</div>
+                        <div class="text-[10px] text-slate-500 uppercase tracking-tighter mono">Operational Rigor</div>
+                    </div>
+                    <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                        <div class="text-sky-500 font-bold mb-1">D.Sc. Cybersecurity</div>
+                        <div class="text-[10px] text-slate-500 uppercase tracking-tighter mono">Advanced Research</div>
+                    </div>
+                    <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                        <div class="text-sky-500 font-bold mb-1">Breach Remediation</div>
+                        <div class="text-[10px] text-slate-500 uppercase tracking-tighter mono">Battle-Tested Leadership</div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-12 text-[9px] text-slate-700 uppercase tracking-widest">
-                Est. 2025 // A.O.E. Holdings Group LLC
+        </div>
+    </section>
+
+    <!-- ========== BLOG / INSIGHTS ========== -->
+    <section id="blog" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
+            <div>
+                <p class="section-heading text-sky-500 mb-4">// RESEARCH_LOGS</p>
+                <h2 class="text-4xl font-bold italic">The Laboratory</h2>
             </div>
+            <a href="/blog/" class="text-slate-500 hover:text-sky-400 transition mono text-xs uppercase tracking-widest">View All Posts &rarr;</a>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+            <article class="p-10 border border-slate-800 rounded-3xl bg-slate-900/20 hover:border-sky-500/20 transition group">
+                <span class="text-[10px] text-slate-600 mono uppercase tracking-widest italic">Featured Post</span>
+                <h4 class="text-2xl font-bold mt-4 mb-4 leading-tight group-hover:text-sky-400 transition">Why Your SBOM Isn't Enough: The "Clean Kitchen" Problem</h4>
+                <p class="text-slate-500 mb-8 leading-relaxed">Understanding why tracking ingredients fails if the build environment itself is compromised.</p>
+                <a href="/blog/why-sbom-isnt-enough.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Read Full Breakdown &rarr;</a>
+            </article>
+            <div class="flex flex-col gap-8">
+                <div class="p-8 border border-slate-800 rounded-2xl hover:border-sky-500/30 transition group">
+                    <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">In Draft</span>
+                    <h5 class="font-bold mt-2 mb-2 group-hover:text-sky-400 transition">Defining the PBOM: Tracking Pipeline Chain-of-Custody</h5>
+                    <p class="text-slate-600 text-sm">A technical deep dive into verifiable pipeline bill of materials.</p>
+                </div>
+                <div class="p-8 border border-slate-800 rounded-2xl hover:border-sky-500/30 transition group">
+                    <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">In Draft</span>
+                    <h5 class="font-bold mt-2 mb-2 group-hover:text-sky-400 transition">Guardrails, Not Gates: Scaling Compliance in 2026</h5>
+                    <p class="text-slate-600 text-sm">How to use OPA to enable developers while maintaining federal standards.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== WHITEPAPER / RESOURCES ========== -->
+    <section id="resources" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="p-10 bg-sky-500/5 border border-sky-500/20 rounded-3xl">
+                <p class="section-heading text-sky-500 mb-4">// WHITEPAPER</p>
+                <h3 class="text-2xl font-bold mb-4">The Verifiable Pipeline</h3>
+                <p class="text-slate-400 mb-6 mono text-sm leading-relaxed">Implementing Policy-as-Code and PBOM for Sovereign Software Supply Chains. A 20-page technical framework.</p>
+                <a href="/whitepapers/sovereign-pipeline.html" class="bg-sky-500 text-slate-950 px-6 py-3 rounded-lg font-bold hover:bg-sky-400 transition inline-block">Read Whitepaper</a>
+            </div>
+            <div class="flex flex-col justify-center">
+                <h3 class="text-xl font-bold mb-8 mono underline decoration-sky-500 underline-offset-8">The Standardized Stack</h3>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between py-3 border-b border-slate-800">
+                        <span class="text-slate-300 font-bold">Language</span>
+                        <span class="text-slate-500 mono">Go (Golang)</span>
+                    </div>
+                    <div class="flex justify-between py-3 border-b border-slate-800">
+                        <span class="text-slate-300 font-bold">Policy Engine</span>
+                        <span class="text-slate-500 mono">OPA / Rego</span>
+                    </div>
+                    <div class="flex justify-between py-3 border-b border-slate-800">
+                        <span class="text-slate-300 font-bold">Identity</span>
+                        <span class="text-slate-500 mono">Sigstore / Cosign</span>
+                    </div>
+                    <div class="flex justify-between py-3 border-b border-slate-800">
+                        <span class="text-slate-300 font-bold">Infrastructure</span>
+                        <span class="text-slate-500 mono">Terraform / OpenTofu</span>
+                    </div>
+                    <div class="flex justify-between py-3 border-b border-slate-800">
+                        <span class="text-slate-300 font-bold">Secrets</span>
+                        <span class="text-slate-500 mono">HashiCorp Vault</span>
+                    </div>
+                    <div class="flex justify-between py-3">
+                        <span class="text-slate-300 font-bold">Orchestration</span>
+                        <span class="text-slate-500 mono">GitHub Actions (Self-Hosted)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="border-t border-slate-800 py-20 px-6 bg-slate-950">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div>
+                <div class="text-xl font-black mono mb-6">BUILD<span class="text-sky-400">FLOW</span>LABS</div>
+                <p class="text-slate-500 text-sm max-w-xs mono">Engineering secure supply chains through Policy-as-Code and Intelligence-grade enablement.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-16">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Product</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
+                        <li><a href="/docs/blueprint.html" class="hover:text-sky-400 transition">The Blueprint</a></li>
+                        <li><a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Resources</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/blog/" class="hover:text-sky-400 transition">Blog</a></li>
+                        <li><a href="/whitepapers/sovereign-pipeline.html" class="hover:text-sky-400 transition">Whitepaper</a></li>
+                        <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Company</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="mailto:advisory@buildflowlabs.com" class="hover:text-sky-400 transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">A.O.E. Holdings</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 mono uppercase tracking-[0.2em] gap-4">
+            <span>&copy; 2026 A.O.E. Holdings Group LLC // Build Flow Labs</span>
+            <span>Automating Trust // Engineering Sovereignty</span>
+            <span>v2.0.0-stable</span>
         </div>
     </footer>
 
