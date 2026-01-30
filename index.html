@@ -39,7 +39,7 @@
                 <a href="#mission" class="hover:text-sky-400 transition">Mission</a>
                 <a href="#differentiators" class="hover:text-sky-400 transition">Why Us</a>
                 <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
-                <a href="#product" class="hover:text-sky-400 transition">BuildGuard</a>
+                <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
                 <a href="#consulting" class="hover:text-sky-400 transition">Advisory</a>
                 <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
                 <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
@@ -59,7 +59,7 @@
         <a href="#mission" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Mission</a>
         <a href="#differentiators" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Why Us</a>
         <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
-        <a href="#product" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BuildGuard</a>
+        <a href="/product/buildguard.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BuildGuard</a>
         <a href="#consulting" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Advisory</a>
         <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
         <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
@@ -210,54 +210,59 @@
         <div class="grid lg:grid-cols-2 gap-20 items-center">
             <div>
                 <p class="section-heading text-sky-500 mb-4">// CORE_PRODUCT</p>
-                <h2 class="text-4xl font-bold mb-6 italic">BuildGuard CLI</h2>
+                <h2 class="text-4xl font-bold mb-6 italic">BuildGuard</h2>
                 <p class="text-slate-400 mb-8 leading-relaxed">
-                    Our Go-based CLI provides a unified interface for supply chain integrity. It doesn't just scan; it attests, signs, and enforces. A standalone binary designed for high-assurance environments.
+                    Continuous compliance for GitHub. BuildGuard scans your entire org, evaluates 10 policies mapped to 6 compliance frameworks, records evidence in PostgreSQL, and auto-remediates violations via pull requests.
                 </p>
                 <div class="space-y-4 text-sm mono text-slate-300 mb-8">
-                    <div class="flex gap-4"><span class="text-sky-500">01</span> Automated PBOM/SBOM Generation</div>
-                    <div class="flex gap-4"><span class="text-sky-500">02</span> Rego-based Policy Enforcement</div>
-                    <div class="flex gap-4"><span class="text-sky-500">03</span> OIDC-Identity Attestation via Sigstore</div>
-                    <div class="flex gap-4"><span class="text-sky-500">04</span> Federal Policy Baseline (NIST/FedRAMP)</div>
+                    <div class="flex gap-4"><span class="text-sky-500">01</span> 10 Compliance Policies (Security, Governance, SOX)</div>
+                    <div class="flex gap-4"><span class="text-sky-500">02</span> 6 Framework Mappings &mdash; SOC2, SOX, NIST, ISO, PCI, FedRAMP</div>
+                    <div class="flex gap-4"><span class="text-sky-500">03</span> Auto-Remediation via Pull Requests</div>
+                    <div class="flex gap-4"><span class="text-sky-500">04</span> PostgreSQL Evidence Ledger &amp; Audit Trail</div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mb-8">
                     <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
-                        <span class="block text-sky-500 font-bold mb-1">D.Sc. Backed</span>
-                        <span class="text-[10px] text-slate-500 uppercase mono">Doctorate-Level Rigor</span>
+                        <span class="block text-sky-500 font-bold mb-1">33 Controls</span>
+                        <span class="text-[10px] text-slate-500 uppercase mono">Framework Coverage</span>
                     </div>
                     <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
-                        <span class="block text-sky-500 font-bold mb-1">Ex-Intel</span>
-                        <span class="text-[10px] text-slate-500 uppercase mono">Battle-Tested Design</span>
+                        <span class="block text-sky-500 font-bold mb-1">OPA / Rego</span>
+                        <span class="text-[10px] text-slate-500 uppercase mono">Extensible Engine</span>
                     </div>
                 </div>
-                <a href="/docs/buildguard-cli.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">View CLI Documentation &rarr;</a>
+                <div class="flex gap-6">
+                    <a href="/product/buildguard.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Full Product Details &rarr;</a>
+                    <a href="/docs/buildguard-cli.html" class="text-slate-500 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">CLI Docs &rarr;</a>
+                </div>
             </div>
             <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
                 <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
                     <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
                     <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
                     <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
-                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">buildguard v1.0.0</span>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">buildguard scan</span>
                 </div>
                 <div class="p-8 mono text-xs text-slate-400 leading-7">
-                    <div class="text-sky-400">$ buildguard check --mode enterprise --pbom-enabled</div>
-                    <div class="mt-2">[INFO] Identifying Pipeline Chain-of-Custody...</div>
-                    <div>[INFO] Analyzing 12 Infrastructure Files...</div>
-                    <div class="text-slate-300 mt-4 font-bold">Policy Evaluation:</div>
+                    <div class="text-sky-400">$ buildguard scan --org acme-corp</div>
+                    <div class="mt-2">[INFO] Scanning 14 repositories...</div>
+                    <div class="text-slate-300 mt-4 font-bold">Policy Results:</div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
-                        <span>rule_enforce_mfa</span><span class="text-sky-400">[PASS]</span>
+                        <span>POL-SEC-01 Docker Root User</span><span class="text-sky-400">[PASS]</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
-                        <span>rule_pipeline_attestation</span><span class="text-sky-400">[PASS]</span>
+                        <span>POL-GOV-02 CODEOWNERS</span><span class="text-amber-400">[WARN]</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
-                        <span>rule_secret_scan_pre_commit</span><span class="text-sky-400">[PASS]</span>
+                        <span>POL-SEC-03 Secret Exposure</span><span class="text-sky-400">[PASS]</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
-                        <span>rule_sbom_cyclonedx</span><span class="text-sky-400">[PASS]</span>
+                        <span>POL-SEC-04 Branch Protection</span><span class="text-red-400">[FAIL]</span>
                     </div>
-                    <div class="text-sky-400 mt-4">Attestation Success: pbom.json generated.</div>
-                    <div class="text-slate-600 mt-2 italic">// Forensic evidence stored. Chain of custody verified.</div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>POL-SOX-01 Separation of Duties</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="text-sky-400 mt-4">Scan complete: 12/14 repos compliant (85%)</div>
+                    <div class="text-slate-600 mt-1 italic">// Evidence recorded. 2 auto-fix PRs opened.</div>
                 </div>
             </div>
         </div>
@@ -462,7 +467,8 @@
                 <div>
                     <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Product</h4>
                     <ul class="text-xs text-slate-500 space-y-3 mono">
-                        <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
+                        <li><a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
+                        <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">CLI Docs</a></li>
                         <li><a href="/docs/blueprint.html" class="hover:text-sky-400 transition">The Blueprint</a></li>
                         <li><a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a></li>
                     </ul>
