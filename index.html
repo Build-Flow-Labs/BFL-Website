@@ -40,6 +40,7 @@
                 <a href="#differentiators" class="hover:text-sky-400 transition">Why Us</a>
                 <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
                 <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
+                <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
                 <a href="#consulting" class="hover:text-sky-400 transition">Advisory</a>
                 <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
                 <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
@@ -60,6 +61,7 @@
         <a href="#differentiators" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Why Us</a>
         <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
         <a href="/product/buildguard.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BuildGuard</a>
+        <a href="/product/pbom.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">PBOM</a>
         <a href="#consulting" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Advisory</a>
         <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
         <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
@@ -268,6 +270,63 @@
         </div>
     </section>
 
+    <!-- ========== PBOM PRODUCT ========== -->
+    <section id="pbom" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow order-2 lg:order-1">
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">pbom inspect</span>
+                </div>
+                <div class="p-8 mono text-xs text-slate-400 leading-7">
+                    <div class="text-sky-400">$ pbom inspect pbom.json</div>
+                    <div class="mt-2 text-slate-300 font-bold">PBOM f47ac10b-58cc-4372-a567-0e02b2c3d479</div>
+                    <div class="mt-2 text-slate-500 font-bold">SOURCE</div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Repository</span><span>acme-corp/payments-service</span></div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Commit</span><span>a1b2c3d4...a1b2</span></div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Branch</span><span>main</span></div>
+                    <div class="mt-2 text-slate-500 font-bold">BUILD</div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Workflow</span><span>CI (7890123456)</span></div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Tools</span><span>go:1.22.4 ko:0.15.2</span></div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Status</span><span class="text-green-400">success</span></div>
+                    <div class="mt-2 text-slate-500 font-bold">ARTIFACT #1</div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Name</span><span>payments-service</span></div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Type</span><span>container-image</span></div>
+                    <div class="flex gap-6"><span class="text-slate-500 w-20">Vulns</span><span>C:<span class="text-green-400">0</span> H:<span class="text-amber-400">1</span> M:4 L:12</span></div>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <p class="section-heading text-sky-500 mb-4">// PIPELINE_INTEGRITY</p>
+                <h2 class="text-4xl font-bold mb-6 italic">PBOM</h2>
+                <p class="text-slate-400 mb-8 leading-relaxed">
+                    Pipeline Bill of Materials. An SBOM tells you what is inside the artifact. A PBOM tells you <strong class="text-sky-400">how it got there</strong>. Cryptographic lineage from commit to production with zero developer friction.
+                </p>
+                <div class="space-y-4 text-sm mono text-slate-300 mb-8">
+                    <div class="flex gap-4"><span class="text-sky-500">01</span> 3-Phase Lineage &mdash; Source, Build, Promotion</div>
+                    <div class="flex gap-4"><span class="text-sky-500">02</span> 14 Build Tools Auto-Detected</div>
+                    <div class="flex gap-4"><span class="text-sky-500">03</span> Zero-Touch Collection via Required Workflow</div>
+                    <div class="flex gap-4"><span class="text-sky-500">04</span> JSON Schema v1.0.0 &amp; OCI Referrer Storage</div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                        <span class="block text-sky-500 font-bold mb-1">0 Friction</span>
+                        <span class="text-[10px] text-slate-500 uppercase mono">Developer Impact</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                        <span class="block text-sky-500 font-bold mb-1">Kargo + GHA</span>
+                        <span class="text-[10px] text-slate-500 uppercase mono">Native Integrations</span>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <a href="/product/pbom.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Full Product Details &rarr;</a>
+                    <a href="/blog/why-sbom-isnt-enough.html" class="text-slate-500 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">SBOM vs PBOM &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ========== ENTERPRISE-IN-A-BOX: THE BLUEPRINT ========== -->
     <section id="blueprint" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
         <div class="text-center mb-20">
@@ -468,6 +527,7 @@
                     <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Product</h4>
                     <ul class="text-xs text-slate-500 space-y-3 mono">
                         <li><a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
+                        <li><a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a></li>
                         <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">CLI Docs</a></li>
                         <li><a href="/docs/blueprint.html" class="hover:text-sky-400 transition">The Blueprint</a></li>
                         <li><a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a></li>

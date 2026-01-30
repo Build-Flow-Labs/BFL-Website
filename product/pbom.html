@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBOM | Pipeline Bill of Materials | Build Flow Labs</title>
+    <meta name="description" content="PBOM: Track how artifacts reach production. Cryptographic pipeline lineage across GitHub Actions and Kargo with zero developer friction.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="PBOM | Pipeline Bill of Materials">
+    <meta property="og:description" content="Track how artifacts reach production. Cryptographic pipeline lineage across GitHub Actions and Kargo with zero developer friction.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://info.buildflowlabs.com/product/pbom.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PBOM | Pipeline Bill of Materials">
+    <meta name="twitter:description" content="An SBOM tells you what is inside the artifact. A PBOM tells you how it got there.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .terminal-glow { box-shadow: 0 0 50px rgba(56, 189, 248, 0.15); }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .gradient-text { background: linear-gradient(to right, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .section-heading { letter-spacing: 0.2em; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; }
+        .bg-blue-glow { background: radial-gradient(circle at center, rgba(56, 189, 248, 0.04) 0%, transparent 70%); }
+        details summary { cursor: pointer; }
+        details summary::-webkit-details-marker { display: none; }
+        details[open] summary .chevron { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="text-slate-100 selection:bg-sky-500/30">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono">
+                BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
+            </a>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="/" class="hover:text-sky-400 transition">Home</a>
+                <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+                <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
+                <a href="/product/pbom.html" class="text-sky-400 transition">PBOM</a>
+                <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+                <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+            </div>
+            <a href="mailto:advisory@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
+            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+    </nav>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+        <a href="/" class="hover:text-sky-400 transition">Home</a>
+        <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+        <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
+        <a href="/product/pbom.html" class="text-sky-400 transition">PBOM</a>
+        <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+        <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+        <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
+    </div>
+    <script>
+        const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+        toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+    </script>
+
+    <!-- ========== HERO ========== -->
+    <header class="relative pt-32 pb-24 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-sky-500/20 bg-sky-500/5 rounded-full">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+                </span>
+                <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Pipeline Integrity</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6 gradient-text">
+                Pipeline Bill of Materials
+            </h1>
+            <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-4 leading-relaxed">
+                An SBOM tells you what is inside the artifact. A PBOM tells you <strong class="text-sky-400">how it got there</strong>.
+            </p>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-8 leading-relaxed">
+                Cryptographic pipeline lineage across GitHub Actions and Kargo. Zero developer friction. Complete chain-of-custody from commit to production.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                <a href="#cli" class="bg-slate-100 hover:bg-sky-400 text-slate-950 px-10 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2 group">
+                    View CLI Reference
+                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </a>
+                <a href="mailto:advisory@buildflowlabs.com?subject=PBOM%20Access" class="border border-slate-800 hover:border-slate-600 px-10 py-4 rounded-full font-bold transition text-center">
+                    Request Access
+                </a>
+            </div>
+
+            <!-- Stats row -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                    <div class="text-3xl font-black text-sky-400 mb-1">3</div>
+                    <div class="text-[10px] text-slate-500 uppercase mono tracking-widest">Lineage Phases</div>
+                </div>
+                <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                    <div class="text-3xl font-black text-sky-400 mb-1">14</div>
+                    <div class="text-[10px] text-slate-500 uppercase mono tracking-widest">Build Tools Detected</div>
+                </div>
+                <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                    <div class="text-3xl font-black text-sky-400 mb-1">0s</div>
+                    <div class="text-[10px] text-slate-500 uppercase mono tracking-widest">Developer Friction</div>
+                </div>
+                <div class="p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                    <div class="text-3xl font-black text-sky-400 mb-1">5</div>
+                    <div class="text-[10px] text-slate-500 uppercase mono tracking-widest">CLI Commands</div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute inset-0 opacity-10 pointer-events-none"
+             style="background-image: radial-gradient(circle at 2px 2px, #1e293b 1px, transparent 0); background-size: 50px 50px;">
+        </div>
+    </header>
+
+    <!-- ========== THREE-PHASE DATA MODEL ========== -->
+    <section id="phases" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// DATA_MODEL</p>
+            <h2 class="text-4xl font-bold italic">Three-Phase Lineage</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">PBOM separates artifact provenance into three distinct temporal phases, each capturing a different aspect of the pipeline lineage.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Phase A -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20 hover:border-sky-500/20 transition">
+                <div class="text-sky-500 mono text-3xl font-black mb-4">A</div>
+                <h3 class="text-xl font-bold mb-3">Source &amp; Build</h3>
+                <p class="text-slate-500 text-sm mb-4">Captured during GitHub Actions workflow execution. Records source code identity and build environment.</p>
+                <ul class="text-slate-400 text-sm space-y-2">
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Repository, commit SHA, branch, author</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Workflow run ID, name, trigger event</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Runner OS, architecture, self-hosted flag</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Tool versions (14 build tools)</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Secrets accessed (names only)</li>
+                </ul>
+            </div>
+
+            <!-- Phase B -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20 hover:border-sky-500/20 transition">
+                <div class="text-sky-500 mono text-3xl font-black mb-4">B</div>
+                <h3 class="text-xl font-bold mb-3">Artifacts &amp; Security</h3>
+                <p class="text-slate-500 text-sm mb-4">Captured after build succeeds. Records what was produced and its security posture at creation time.</p>
+                <ul class="text-slate-400 text-sm space-y-2">
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Artifact name, type, SHA256 digest</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Registry URI and tags</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> SLSA provenance level (0&ndash;4)</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Vulnerability snapshot (C/H/M/L)</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Builder ID and attestation URI</li>
+                </ul>
+            </div>
+
+            <!-- Phase C -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20 hover:border-sky-500/20 transition">
+                <div class="text-sky-500 mono text-3xl font-black mb-4">C</div>
+                <h3 class="text-xl font-bold mb-3">Promotion</h3>
+                <p class="text-slate-500 text-sm mb-4">Captured when artifacts are promoted through deployment stages via Kargo GitOps.</p>
+                <ul class="text-slate-400 text-sm space-y-2">
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Kargo Freight ID</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Target stage (dev, staging, prod)</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Who promoted and when</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Co-deployed services snapshot</li>
+                    <li class="flex gap-2"><span class="text-sky-400 shrink-0">&bull;</span> Full environment context</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Lineage flow -->
+        <div class="mt-16 text-center">
+            <div class="inline-flex items-center gap-4 mono text-sm text-slate-500 flex-wrap justify-center">
+                <span class="text-sky-400 font-bold">Commit SHA</span>
+                <span>&rarr;</span>
+                <span class="text-sky-400 font-bold">Workflow Run</span>
+                <span>&rarr;</span>
+                <span class="text-sky-400 font-bold">Image Digest</span>
+                <span>&rarr;</span>
+                <span class="text-sky-400 font-bold">Kargo Stage</span>
+                <span>&rarr;</span>
+                <span class="text-sky-400 font-bold">Production</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section id="how-it-works" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// HOW_IT_WORKS</p>
+            <h2 class="text-4xl font-bold italic">Zero-Touch Collection</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">PBOM runs as a Required Workflow at the org level. Developers never see it, never configure it, never wait for it.</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-6 text-center">
+            <div>
+                <div class="text-sky-500 mono text-3xl font-black mb-4">01</div>
+                <h3 class="font-bold mb-2">Deploy</h3>
+                <p class="text-slate-500 text-sm">Install the PBOM Required Workflow at the org level. Runs automatically on every push and PR across all repos.</p>
+            </div>
+            <div>
+                <div class="text-sky-500 mono text-3xl font-black mb-4">02</div>
+                <h3 class="font-bold mb-2">Collect</h3>
+                <p class="text-slate-500 text-sm">The workflow captures source and build identity from GITHUB_* environment variables. No code checkout, no interference.</p>
+            </div>
+            <div>
+                <div class="text-sky-500 mono text-3xl font-black mb-4">03</div>
+                <h3 class="font-bold mb-2">Enrich</h3>
+                <p class="text-slate-500 text-sm">A webhook listener enriches the PBOM with runner details, tool versions, artifact digests, and vulnerability data.</p>
+            </div>
+            <div>
+                <div class="text-sky-500 mono text-3xl font-black mb-4">04</div>
+                <h3 class="font-bold mb-2">Attest</h3>
+                <p class="text-slate-500 text-sm">The final PBOM is stored as an OCI artifact referrer, cryptographically linked to the container image it describes.</p>
+            </div>
+        </div>
+
+        <!-- Developer impact callout -->
+        <div class="mt-16 p-8 border border-sky-500/20 bg-sky-500/5 rounded-2xl text-center max-w-2xl mx-auto">
+            <h3 class="text-lg font-bold mb-2">Developer Impact: Zero</h3>
+            <p class="text-slate-400 text-sm">Does not check out repo source. Does not interfere with the developer's build. Never blocks a merge (<code class="mono text-sky-400/80 text-xs">continue-on-error: true</code>). Adds ~10 seconds to the checks list.</p>
+        </div>
+    </section>
+
+    <!-- ========== CLI COMMANDS ========== -->
+    <section id="cli" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// CLI_REFERENCE</p>
+            <h2 class="text-4xl font-bold italic">5 CLI Commands</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">Generate, validate, inspect, push, and version. Built with Go and Cobra.</p>
+        </div>
+
+        <div class="space-y-8">
+            <!-- generate -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                    <h3 class="mono text-sky-400 font-bold text-lg">pbom generate</h3>
+                    <span class="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full font-bold uppercase">Production Ready</span>
+                </div>
+                <p class="text-slate-400 mb-4">Generate a PBOM from the current GitHub Actions environment. Reads GITHUB_* env vars to produce a lineage document with zero configuration.</p>
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                    <div class="text-slate-500"># Generate and write to file</div>
+                    <div class="text-sky-400">pbom generate -o pbom.json</div>
+                    <div class="mt-2 text-slate-500"># Generate to stdout</div>
+                    <div class="text-sky-400">pbom generate</div>
+                </div>
+                <div class="text-sm text-slate-500">
+                    <strong class="text-slate-300">Flags:</strong>
+                    <span class="ml-2"><code class="mono text-sky-400/80">-o, --output &lt;file&gt;</code> &mdash; Write PBOM to file (default: stdout)</span>
+                </div>
+            </div>
+
+            <!-- validate -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                    <h3 class="mono text-sky-400 font-bold text-lg">pbom validate &lt;file&gt;</h3>
+                    <span class="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full font-bold uppercase">Production Ready</span>
+                </div>
+                <p class="text-slate-400 mb-4">Validate a PBOM document for schema correctness. Checks required fields, commit SHA format (40-char hex), and artifact digest format (<code class="mono text-sky-400/80 text-xs">sha256:</code> + 64 hex).</p>
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400">
+                    <div class="text-sky-400">pbom validate pbom.json</div>
+                    <div class="text-green-400 mt-1">valid</div>
+                </div>
+            </div>
+
+            <!-- inspect -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                    <h3 class="mono text-sky-400 font-bold text-lg">pbom inspect &lt;file&gt;</h3>
+                    <span class="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full font-bold uppercase">Production Ready</span>
+                </div>
+                <p class="text-slate-400 mb-4">Display pipeline lineage in a human-readable format. Shows source, build, artifacts, and promotion data in structured sections.</p>
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 leading-6 mb-4">
+                    <div class="text-sky-400">$ pbom inspect pbom.json</div>
+                    <div class="mt-2 text-slate-300 font-bold">PBOM f47ac10b-58cc-4372-a567-0e02b2c3d479</div>
+                    <div class="mt-2 text-slate-500 font-bold">SOURCE</div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Repository</span><span>acme-corp/payments-service</span></div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Commit</span><span>a1b2c3d4e5f6...a1b2</span></div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Branch</span><span>main</span></div>
+                    <div class="mt-2 text-slate-500 font-bold">BUILD</div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Workflow</span><span>CI (7890123456)</span></div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Trigger</span><span>push</span></div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Actor</span><span>jane.doe</span></div>
+                    <div class="flex gap-8"><span class="text-slate-500 w-24">Status</span><span class="text-green-400">success</span></div>
+                </div>
+                <div class="text-sm text-slate-500">
+                    <strong class="text-slate-300">Flags:</strong>
+                    <span class="ml-2"><code class="mono text-sky-400/80">--json</code> &mdash; Output raw JSON instead of formatted summary</span>
+                </div>
+            </div>
+
+            <!-- push -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                    <h3 class="mono text-sky-400 font-bold text-lg">pbom push &lt;file&gt; &lt;artifact-ref&gt;</h3>
+                    <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-full font-bold uppercase">Coming Soon</span>
+                </div>
+                <p class="text-slate-400 mb-4">Push a PBOM to an OCI registry as a referrer artifact. Links the lineage document to the container image it describes using the OCI 1.1 Referrers API.</p>
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400">
+                    <div class="text-sky-400">pbom push pbom.json ghcr.io/acme-corp/my-app@sha256:abc123...</div>
+                </div>
+            </div>
+
+            <!-- version -->
+            <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                <h3 class="mono text-sky-400 font-bold text-lg mb-3">pbom version</h3>
+                <p class="text-slate-400 mb-4">Print PBOM CLI and schema version.</p>
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400">
+                    <div class="text-sky-400">$ pbom version</div>
+                    <div class="text-slate-300 mt-1">pbom dev (schema 1.0.0)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BUILD TOOL DETECTION ========== -->
+    <section id="tools" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// TOOL_DETECTION</p>
+            <h2 class="text-4xl font-bold italic">14 Build Tools Detected</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">PBOM probes the build runner's PATH for known tools and records their exact versions. Covers the most common build ecosystems.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Go</div>
+                <div class="text-[10px] text-slate-600 mono">go version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Node.js</div>
+                <div class="text-[10px] text-slate-600 mono">node --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Python</div>
+                <div class="text-[10px] text-slate-600 mono">python3 --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Java</div>
+                <div class="text-[10px] text-slate-600 mono">java -version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Docker</div>
+                <div class="text-[10px] text-slate-600 mono">docker version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">kubectl</div>
+                <div class="text-[10px] text-slate-600 mono">kubectl version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Helm</div>
+                <div class="text-[10px] text-slate-600 mono">helm version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">ko</div>
+                <div class="text-[10px] text-slate-600 mono">ko version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Cargo</div>
+                <div class="text-[10px] text-slate-600 mono">cargo --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">rustc</div>
+                <div class="text-[10px] text-slate-600 mono">rustc --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">.NET</div>
+                <div class="text-[10px] text-slate-600 mono">dotnet --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Gradle</div>
+                <div class="text-[10px] text-slate-600 mono">gradle --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">Maven</div>
+                <div class="text-[10px] text-slate-600 mono">mvn --version</div>
+            </div>
+            <div class="p-4 border border-slate-800 rounded-xl bg-slate-900/30 text-center hover:border-sky-500/20 transition">
+                <div class="mono text-sky-400 font-bold text-sm mb-1">npm</div>
+                <div class="text-[10px] text-slate-600 mono">npm --version</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PBOM DOCUMENT STRUCTURE ========== -->
+    <section id="schema" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// DOCUMENT_SCHEMA</p>
+            <h2 class="text-4xl font-bold italic">PBOM Document Structure</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">JSON Schema Draft 2020-12. Every field is typed and validated. The schema is the contract.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Schema fields -->
+            <div class="space-y-4">
+                <details class="border border-slate-800 rounded-xl bg-slate-900/20 overflow-hidden" open>
+                    <summary class="p-5 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold">Root Fields</h3>
+                            <p class="text-slate-500 text-xs mt-1">Required: pbom_version, id, timestamp, source, build</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-500 chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-5 pb-5 space-y-1 text-sm">
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">pbom_version</span><span class="text-slate-500 text-xs">const: "1.0.0"</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">id</span><span class="text-slate-500 text-xs">UUID v4</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">timestamp</span><span class="text-slate-500 text-xs">ISO 8601 UTC</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">source</span><span class="text-slate-500 text-xs">object (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">build</span><span class="text-slate-500 text-xs">object (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">artifacts</span><span class="text-slate-500 text-xs">array (optional)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">promotion</span><span class="text-slate-500 text-xs">object (optional)</span></div>
+                    </div>
+                </details>
+
+                <details class="border border-slate-800 rounded-xl bg-slate-900/20 overflow-hidden">
+                    <summary class="p-5 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold">Source Object</h3>
+                            <p class="text-slate-500 text-xs mt-1">Required: repository, commit_sha</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-500 chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-5 pb-5 space-y-1 text-sm">
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">repository</span><span class="text-slate-500 text-xs">"acme-corp/payments-service"</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">commit_sha</span><span class="text-slate-500 text-xs">40-char hex (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">branch</span><span class="text-slate-500 text-xs">string (optional)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">ref</span><span class="text-slate-500 text-xs">full git ref (optional)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">author</span><span class="text-slate-500 text-xs">string (optional)</span></div>
+                    </div>
+                </details>
+
+                <details class="border border-slate-800 rounded-xl bg-slate-900/20 overflow-hidden">
+                    <summary class="p-5 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold">Build Object</h3>
+                            <p class="text-slate-500 text-xs mt-1">Required: workflow_run_id, workflow_name, actor, status</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-500 chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-5 pb-5 space-y-1 text-sm">
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">workflow_run_id</span><span class="text-slate-500 text-xs">GHA run ID (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">workflow_name</span><span class="text-slate-500 text-xs">"CI", "Release" (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">trigger</span><span class="text-slate-500 text-xs">push | pull_request | schedule | ...</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">actor</span><span class="text-slate-500 text-xs">GitHub user (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">status</span><span class="text-slate-500 text-xs">success | failure | cancelled</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">runner</span><span class="text-slate-500 text-xs">{ os, arch, name, self_hosted }</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">tool_versions</span><span class="text-slate-500 text-xs">{ "go": "1.22.4", ... }</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">secrets_accessed</span><span class="text-slate-500 text-xs">["GHCR_TOKEN", ...] (names only)</span></div>
+                    </div>
+                </details>
+
+                <details class="border border-slate-800 rounded-xl bg-slate-900/20 overflow-hidden">
+                    <summary class="p-5 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold">Artifact Object</h3>
+                            <p class="text-slate-500 text-xs mt-1">Required: name, type, digest</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-500 chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-5 pb-5 space-y-1 text-sm">
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">name</span><span class="text-slate-500 text-xs">artifact name (required)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">type</span><span class="text-slate-500 text-xs">container-image | binary | package | ...</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">digest</span><span class="text-slate-500 text-xs">sha256:&lt;64 hex chars&gt;</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">uri</span><span class="text-slate-500 text-xs">registry URI (optional)</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">tags</span><span class="text-slate-500 text-xs">["v1.0.0", "latest"]</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">provenance</span><span class="text-slate-500 text-xs">{ slsa_level, builder_id }</span></div>
+                        <div class="flex justify-between py-1 border-t border-slate-800"><span class="mono text-sky-400/80 text-xs">vulnerabilities</span><span class="text-slate-500 text-xs">{ scanner, critical, high, ... }</span></div>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Example PBOM -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow self-start sticky top-20">
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">pbom.json</span>
+                </div>
+                <div class="p-6 mono text-xs text-slate-400 leading-6 overflow-x-auto">
+<pre>{
+  <span class="text-sky-400">"pbom_version"</span>: <span class="text-slate-300">"1.0.0"</span>,
+  <span class="text-sky-400">"id"</span>: <span class="text-slate-300">"f47ac10b-58cc-4372..."</span>,
+  <span class="text-sky-400">"timestamp"</span>: <span class="text-slate-300">"2026-01-28T14:30:00Z"</span>,
+  <span class="text-sky-400">"source"</span>: {
+    <span class="text-sky-400">"repository"</span>: <span class="text-slate-300">"acme-corp/payments-service"</span>,
+    <span class="text-sky-400">"commit_sha"</span>: <span class="text-slate-300">"a1b2c3d4e5f6...a1b2"</span>,
+    <span class="text-sky-400">"branch"</span>: <span class="text-slate-300">"main"</span>,
+    <span class="text-sky-400">"author"</span>: <span class="text-slate-300">"jane.doe"</span>
+  },
+  <span class="text-sky-400">"build"</span>: {
+    <span class="text-sky-400">"workflow_run_id"</span>: <span class="text-slate-300">"7890123456"</span>,
+    <span class="text-sky-400">"workflow_name"</span>: <span class="text-slate-300">"CI"</span>,
+    <span class="text-sky-400">"trigger"</span>: <span class="text-slate-300">"push"</span>,
+    <span class="text-sky-400">"actor"</span>: <span class="text-slate-300">"jane.doe"</span>,
+    <span class="text-sky-400">"status"</span>: <span class="text-green-400">"success"</span>,
+    <span class="text-sky-400">"tool_versions"</span>: {
+      <span class="text-sky-400">"go"</span>: <span class="text-slate-300">"1.22.4"</span>,
+      <span class="text-sky-400">"ko"</span>: <span class="text-slate-300">"0.15.2"</span>
+    }
+  },
+  <span class="text-sky-400">"artifacts"</span>: [{
+    <span class="text-sky-400">"name"</span>: <span class="text-slate-300">"payments-service"</span>,
+    <span class="text-sky-400">"type"</span>: <span class="text-slate-300">"container-image"</span>,
+    <span class="text-sky-400">"digest"</span>: <span class="text-slate-300">"sha256:9f86d081..."</span>,
+    <span class="text-sky-400">"vulnerabilities"</span>: {
+      <span class="text-sky-400">"scanner"</span>: <span class="text-slate-300">"trivy"</span>,
+      <span class="text-sky-400">"critical"</span>: <span class="text-green-400">0</span>,
+      <span class="text-sky-400">"high"</span>: <span class="text-amber-400">1</span>
+    }
+  }]
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== REQUIRED WORKFLOW ========== -->
+    <section id="deployment" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// DEPLOYMENT</p>
+            <h2 class="text-4xl font-bold italic">Deploy as a Required Workflow</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">Install once at the org level. Every repo gets pipeline lineage automatically.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Required Workflow -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">Required Workflow</span>
+                </div>
+                <div class="p-6 mono text-xs text-slate-400 leading-6">
+                    <div><span class="text-sky-400">name</span>: PBOM Collector</div>
+                    <div><span class="text-sky-400">on</span>:</div>
+                    <div>  <span class="text-sky-400">push</span>: { branches: [main, master] }</div>
+                    <div>  <span class="text-sky-400">pull_request</span>:</div>
+                    <div class="mt-2"><span class="text-sky-400">permissions</span>:</div>
+                    <div>  contents: read</div>
+                    <div>  actions: read</div>
+                    <div class="mt-2"><span class="text-sky-400">jobs</span>:</div>
+                    <div>  <span class="text-sky-400">collect</span>:</div>
+                    <div>    runs-on: ubuntu-latest</div>
+                    <div>    continue-on-error: <span class="text-green-400">true</span></div>
+                    <div>    <span class="text-sky-400">steps</span>:</div>
+                    <div>      - <span class="text-slate-500"># Install PBOM CLI</span></div>
+                    <div>      - run: <span class="text-sky-400">pbom generate -o pbom.json</span></div>
+                    <div>      - run: <span class="text-sky-400">pbom inspect pbom.json</span></div>
+                    <div>      - <span class="text-sky-400">uses</span>: actions/upload-artifact@v4</div>
+                    <div>        <span class="text-sky-400">with</span>:</div>
+                    <div>          name: pbom-${{ github.run_id }}</div>
+                    <div>          path: pbom.json</div>
+                    <div>          retention-days: 90</div>
+                </div>
+            </div>
+
+            <!-- Setup steps -->
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold mb-4">Setup in 3 Steps</h3>
+                <div class="flex gap-4">
+                    <div class="text-sky-500 mono font-bold text-sm shrink-0">01</div>
+                    <div>
+                        <h4 class="font-bold mb-1">Add to central repo</h4>
+                        <p class="text-slate-500 text-sm">Copy the PBOM Collector workflow to your org's <code class="mono text-sky-400/80 text-xs">.github</code> repository or platform-workflows repo.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="text-sky-500 mono font-bold text-sm shrink-0">02</div>
+                    <div>
+                        <h4 class="font-bold mb-1">Enable as Required Workflow</h4>
+                        <p class="text-slate-500 text-sm">Org Settings &rarr; Actions &rarr; Required Workflows &rarr; Add workflow. Select which repos to apply it to (all or subset).</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="text-sky-500 mono font-bold text-sm shrink-0">03</div>
+                    <div>
+                        <h4 class="font-bold mb-1">Done</h4>
+                        <p class="text-slate-500 text-sm">Every push and PR now generates a PBOM. Developers don't need to change anything. PBOMs are uploaded as artifacts with 90-day retention.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 border border-slate-800 rounded-xl bg-slate-900/30">
+                    <h4 class="font-bold mb-3 text-sm">Collection Responsibility Split</h4>
+                    <div class="space-y-2 text-xs text-slate-500">
+                        <div class="flex justify-between py-1 border-b border-slate-800"><span>Commit, branch, actor, ref</span><span class="text-sky-400 mono">Required Workflow</span></div>
+                        <div class="flex justify-between py-1 border-b border-slate-800"><span>Run ID, workflow name, trigger</span><span class="text-sky-400 mono">Required Workflow</span></div>
+                        <div class="flex justify-between py-1 border-b border-slate-800"><span>Runner OS/arch, tool versions</span><span class="text-amber-400 mono">Webhook Listener</span></div>
+                        <div class="flex justify-between py-1 border-b border-slate-800"><span>Secrets accessed</span><span class="text-amber-400 mono">Audit Log API</span></div>
+                        <div class="flex justify-between py-1 border-b border-slate-800"><span>Artifact digests, vulnerabilities</span><span class="text-amber-400 mono">Webhook Listener</span></div>
+                        <div class="flex justify-between py-1"><span>Kargo freight / promotion</span><span class="text-slate-600 mono">Kargo Controller</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SBOM vs PBOM ========== -->
+    <section id="comparison" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// SBOM_VS_PBOM</p>
+            <h2 class="text-4xl font-bold italic">Why Both Matter</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">An SBOM lists ingredients. A PBOM verifies the kitchen. You need both for complete supply chain integrity.</p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b-2 border-slate-800">
+                        <th class="text-left py-3 px-4 text-[10px] text-slate-500 mono uppercase tracking-widest"></th>
+                        <th class="text-center py-3 px-4 text-[10px] text-slate-500 mono uppercase tracking-widest">SBOM</th>
+                        <th class="text-center py-3 px-4 text-[10px] text-sky-400 mono uppercase tracking-widest">PBOM</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-400">
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-3 px-4 font-bold text-slate-300">Question</td>
+                        <td class="text-center py-3 px-4">What's inside the artifact?</td>
+                        <td class="text-center py-3 px-4 text-sky-400">How did the artifact get built?</td>
+                    </tr>
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-3 px-4 font-bold text-slate-300">Tracks</td>
+                        <td class="text-center py-3 px-4">Dependencies, licenses, CVEs</td>
+                        <td class="text-center py-3 px-4 text-sky-400">Source, build env, runner, tools</td>
+                    </tr>
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-3 px-4 font-bold text-slate-300">Detects</td>
+                        <td class="text-center py-3 px-4">Known vulnerabilities in deps</td>
+                        <td class="text-center py-3 px-4 text-sky-400">Compromised build environments</td>
+                    </tr>
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-3 px-4 font-bold text-slate-300">Prevents</td>
+                        <td class="text-center py-3 px-4">Shipping vulnerable libraries</td>
+                        <td class="text-center py-3 px-4 text-sky-400">SolarWinds-style supply chain attacks</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 font-bold text-slate-300">Standard</td>
+                        <td class="text-center py-3 px-4">CycloneDX, SPDX</td>
+                        <td class="text-center py-3 px-4 text-sky-400">PBOM Schema v1.0.0 (JSON)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold mb-6">Stop trusting the pipeline blindly.</h2>
+            <p class="text-slate-500 max-w-lg mx-auto mb-8">PBOM proves exactly which human, runner, and compiler produced every artifact. Forensic-grade lineage from commit to production.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:advisory@buildflowlabs.com?subject=PBOM%20Access" class="bg-sky-500 text-slate-950 px-8 py-4 rounded-full font-bold hover:bg-sky-400 transition">Request Access</a>
+                <a href="/blog/why-sbom-isnt-enough.html" class="border border-slate-800 hover:border-slate-600 px-8 py-4 rounded-full font-bold transition">Read: Why Your SBOM Isn't Enough</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="border-t border-slate-800 py-20 px-6 bg-slate-950">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div>
+                <div class="text-xl font-black mono mb-6">BUILD<span class="text-sky-400">FLOW</span>LABS</div>
+                <p class="text-slate-500 text-sm max-w-xs mono">Engineering secure supply chains through Policy-as-Code and Intelligence-grade enablement.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-16">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Product</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
+                        <li><a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a></li>
+                        <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">CLI Docs</a></li>
+                        <li><a href="/docs/blueprint.html" class="hover:text-sky-400 transition">The Blueprint</a></li>
+                        <li><a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Resources</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/blog/" class="hover:text-sky-400 transition">Blog</a></li>
+                        <li><a href="/whitepapers/sovereign-pipeline.html" class="hover:text-sky-400 transition">Whitepaper</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Company</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="mailto:advisory@buildflowlabs.com" class="hover:text-sky-400 transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">A.O.E. Holdings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 mono uppercase tracking-[0.2em] gap-4">
+            <span>&copy; 2026 A.O.E. Holdings Group LLC // Build Flow Labs</span>
+            <span>Automating Trust // Engineering Sovereignty</span>
+        </div>
+    </footer>
+
+</body>
+</html>
