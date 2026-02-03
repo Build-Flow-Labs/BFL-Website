@@ -41,6 +41,7 @@
                 <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
                 <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
                 <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
+                <a href="/product/pricing.html" class="hover:text-sky-400 transition">Pricing</a>
                 <a href="#consulting" class="hover:text-sky-400 transition">Advisory</a>
                 <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
                 <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
@@ -62,6 +63,7 @@
         <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
         <a href="/product/buildguard.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BuildGuard</a>
         <a href="/product/pbom.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">PBOM</a>
+        <a href="/product/pricing.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Pricing</a>
         <a href="#consulting" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Advisory</a>
         <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
         <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
@@ -214,17 +216,22 @@
                 <p class="section-heading text-sky-500 mb-4">// CORE_PRODUCT</p>
                 <h2 class="text-4xl font-bold mb-6 italic">BuildGuard</h2>
                 <p class="text-slate-400 mb-8 leading-relaxed">
-                    Continuous compliance for GitHub. BuildGuard scans your entire org, evaluates 10 policies mapped to 6 compliance frameworks, records evidence in PostgreSQL, and auto-remediates violations via pull requests.
+                    Continuous compliance for GitHub. BuildGuard scans your entire org, evaluates 20 policies mapped to 6 compliance frameworks covering 78 controls, records evidence in PostgreSQL, and auto-remediates violations via pull requests.
                 </p>
                 <div class="space-y-4 text-sm mono text-slate-300 mb-8">
-                    <div class="flex gap-4"><span class="text-sky-500">01</span> 10 Compliance Policies (Security, Governance, SOX)</div>
-                    <div class="flex gap-4"><span class="text-sky-500">02</span> 6 Framework Mappings &mdash; SOC2, SOX, NIST, ISO, PCI, FedRAMP</div>
+                    <div class="flex gap-4"><span class="text-sky-500">01</span> 20 Compliance Policies (Security, Governance, SOX)</div>
+                    <div class="flex gap-4"><span class="text-sky-500">02</span> 6 Framework Mappings &mdash; SOC2, SOX, NIST, ISO, PCI, FedRAMP &mdash; 78 Controls</div>
                     <div class="flex gap-4"><span class="text-sky-500">03</span> Auto-Remediation via Pull Requests</div>
-                    <div class="flex gap-4"><span class="text-sky-500">04</span> PostgreSQL Evidence Ledger &amp; Audit Trail</div>
+                    <div class="flex gap-4"><span class="text-sky-500">04</span> Web Dashboard with Real-Time Metrics</div>
+                    <div class="flex gap-4"><span class="text-sky-500">05</span> Slack &amp; Webhook Notifications</div>
                 </div>
-                <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="grid grid-cols-3 gap-4 mb-8">
                     <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
-                        <span class="block text-sky-500 font-bold mb-1">33 Controls</span>
+                        <span class="block text-sky-500 font-bold mb-1">20 Policies</span>
+                        <span class="text-[10px] text-slate-500 uppercase mono">Built-in Library</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                        <span class="block text-sky-500 font-bold mb-1">78 Controls</span>
                         <span class="text-[10px] text-slate-500 uppercase mono">Framework Coverage</span>
                     </div>
                     <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
@@ -232,8 +239,9 @@
                         <span class="text-[10px] text-slate-500 uppercase mono">Extensible Engine</span>
                     </div>
                 </div>
-                <div class="flex gap-6">
+                <div class="flex flex-wrap gap-6">
                     <a href="/product/buildguard.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Full Product Details &rarr;</a>
+                    <a href="/product/pricing.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">View Pricing &rarr;</a>
                     <a href="/docs/buildguard-cli.html" class="text-slate-500 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">CLI Docs &rarr;</a>
                 </div>
             </div>
@@ -247,7 +255,7 @@
                 <div class="p-8 mono text-xs text-slate-400 leading-7">
                     <div class="text-sky-400">$ buildguard scan --org acme-corp</div>
                     <div class="mt-2">[INFO] Scanning 14 repositories...</div>
-                    <div class="text-slate-300 mt-4 font-bold">Policy Results:</div>
+                    <div class="text-slate-300 mt-4 font-bold">Policy Results (20 policies):</div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
                         <span>POL-SEC-01 Docker Root User</span><span class="text-sky-400">[PASS]</span>
                     </div>
@@ -255,14 +263,21 @@
                         <span>POL-GOV-02 CODEOWNERS</span><span class="text-amber-400">[WARN]</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
-                        <span>POL-SEC-03 Secret Exposure</span><span class="text-sky-400">[PASS]</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-800 py-1">
                         <span>POL-SEC-04 Branch Protection</span><span class="text-red-400">[FAIL]</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 py-1">
-                        <span>POL-SOX-01 Separation of Duties</span><span class="text-sky-400">[PASS]</span>
+                        <span>POL-SEC-08 Signed Commits</span><span class="text-amber-400">[WARN]</span>
                     </div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>POL-SEC-11 Vuln Scanning</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>POL-SEC-12 CI/CD Hardening</span><span class="text-sky-400">[PASS]</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 py-1">
+                        <span>POL-GOV-07 Access Review</span><span class="text-red-400">[FAIL]</span>
+                    </div>
+                    <div class="text-slate-600 py-1 italic">... +13 more policies evaluated</div>
                     <div class="text-sky-400 mt-4">Scan complete: 12/14 repos compliant (85%)</div>
                     <div class="text-slate-600 mt-1 italic">// Evidence recorded. 2 auto-fix PRs opened.</div>
                 </div>
@@ -528,6 +543,7 @@
                     <ul class="text-xs text-slate-500 space-y-3 mono">
                         <li><a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
                         <li><a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a></li>
+                        <li><a href="/product/pricing.html" class="hover:text-sky-400 transition">Pricing</a></li>
                         <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">CLI Docs</a></li>
                         <li><a href="/docs/blueprint.html" class="hover:text-sky-400 transition">The Blueprint</a></li>
                         <li><a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a></li>
