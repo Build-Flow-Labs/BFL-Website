@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download BuildGuard | Build Flow Labs</title>
+    <meta name="description" content="Download BuildGuard for macOS, Linux, or Windows. Pre-built binaries and Homebrew tap available. Free compliance scanner for GitHub organizations.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="Download BuildGuard | Build Flow Labs">
+    <meta property="og:description" content="Download BuildGuard for macOS, Linux, or Windows. Pre-built binaries and Homebrew tap available.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://info.buildflowlabs.com/product/downloads.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Download BuildGuard | Build Flow Labs">
+    <meta name="twitter:description" content="Free compliance scanner for GitHub organizations. Download for macOS, Linux, or Windows.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .gradient-text { background: linear-gradient(to right, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .section-heading { letter-spacing: 0.2em; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; }
+        .bg-blue-glow { background: radial-gradient(circle at center, rgba(56, 189, 248, 0.04) 0%, transparent 70%); }
+        .terminal-glow { box-shadow: 0 0 60px -20px rgba(56, 189, 248, 0.15); }
+    </style>
+</head>
+<body class="text-slate-100 selection:bg-sky-500/30">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono">
+                BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
+            </a>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="/" class="hover:text-sky-400 transition">Home</a>
+                <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+                <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
+                <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
+                <a href="/product/pricing.html" class="hover:text-sky-400 transition">Pricing</a>
+                <a href="/product/downloads.html" class="text-sky-400 transition">Downloads</a>
+                <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+                <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+            </div>
+            <a href="mailto:dev@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
+            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+    </nav>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+        <a href="/" class="hover:text-sky-400 transition">Home</a>
+        <a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a>
+        <a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a>
+        <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
+        <a href="/product/pricing.html" class="hover:text-sky-400 transition">Pricing</a>
+        <a href="/product/downloads.html" class="text-sky-400 transition">Downloads</a>
+        <a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">Docs</a>
+        <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+        <a href="mailto:dev@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
+    </div>
+    <script>
+        const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+        toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+    </script>
+
+    <!-- ========== HERO ========== -->
+    <header class="relative pt-32 pb-24 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-sky-500/20 bg-sky-500/5 rounded-full">
+                <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">// Downloads</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+                <span class="gradient-text">Get BuildGuard</span>
+            </h1>
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Pre-built binaries for every platform. Install in seconds.
+            </p>
+        </div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, rgba(56,189,248,0.3) 1px, transparent 1px); background-size: 40px 40px;"></div>
+    </header>
+
+    <!-- ========== HOMEBREW (RECOMMENDED) ========== -->
+    <section class="max-w-4xl mx-auto px-6 pb-24">
+        <div class="text-center mb-12">
+            <p class="section-heading text-sky-500 mb-4">// Recommended</p>
+            <h2 class="text-3xl font-bold italic">Install with Homebrew</h2>
+            <p class="text-slate-400 mt-3">The easiest way to install and update BuildGuard on macOS and Linux.</p>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
+            <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">Terminal</span>
+            </div>
+            <div class="p-6 mono text-sm text-slate-400 leading-8">
+                <div class="text-slate-500"># Install via Homebrew</div>
+                <div class="text-sky-400">brew tap Build-Flow-Labs/buildguard</div>
+                <div class="text-sky-400">brew install buildguard</div>
+                <div class="text-slate-500 mt-4"># Verify installation</div>
+                <div class="text-sky-400">buildguard version</div>
+                <div class="text-slate-500 mt-4"># Scan your organization</div>
+                <div class="text-sky-400">export GITHUB_TOKEN=ghp_your_token</div>
+                <div class="text-sky-400">buildguard scan --org your-org</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PLATFORM DOWNLOADS ========== -->
+    <section class="max-w-7xl mx-auto px-6 py-24 border-t border-subtle">
+        <div class="text-center mb-16">
+            <p class="section-heading text-sky-500 mb-4">// Direct Download</p>
+            <h2 class="text-4xl font-bold italic">Pre-built Binaries</h2>
+            <p class="text-slate-400 mt-3">Download the latest release for your platform. No dependencies required.</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- macOS Apple Silicon -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 hover:border-slate-700 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-lg">&#63743;</div>
+                    <div>
+                        <h3 class="font-bold text-sm">macOS</h3>
+                        <p class="text-slate-500 text-xs mono">Apple Silicon (arm64)</p>
+                    </div>
+                </div>
+                <a href="https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-darwin-arm64" class="block w-full py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold text-center hover:bg-sky-500/20 transition mono">Download</a>
+                <div class="mt-3 text-[10px] text-slate-600 mono leading-5">
+                    curl -L .../buildguard-darwin-arm64 -o buildguard
+                </div>
+            </div>
+            <!-- macOS Intel -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 hover:border-slate-700 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-lg">&#63743;</div>
+                    <div>
+                        <h3 class="font-bold text-sm">macOS</h3>
+                        <p class="text-slate-500 text-xs mono">Intel (amd64)</p>
+                    </div>
+                </div>
+                <a href="https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-darwin-amd64" class="block w-full py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold text-center hover:bg-sky-500/20 transition mono">Download</a>
+                <div class="mt-3 text-[10px] text-slate-600 mono leading-5">
+                    curl -L .../buildguard-darwin-amd64 -o buildguard
+                </div>
+            </div>
+            <!-- Linux amd64 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 hover:border-slate-700 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-sm mono font-bold text-slate-400">LNX</div>
+                    <div>
+                        <h3 class="font-bold text-sm">Linux</h3>
+                        <p class="text-slate-500 text-xs mono">x86_64 (amd64)</p>
+                    </div>
+                </div>
+                <a href="https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-linux-amd64" class="block w-full py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold text-center hover:bg-sky-500/20 transition mono">Download</a>
+                <div class="mt-3 text-[10px] text-slate-600 mono leading-5">
+                    curl -L .../buildguard-linux-amd64 -o buildguard
+                </div>
+            </div>
+            <!-- Linux arm64 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 hover:border-slate-700 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-sm mono font-bold text-slate-400">LNX</div>
+                    <div>
+                        <h3 class="font-bold text-sm">Linux</h3>
+                        <p class="text-slate-500 text-xs mono">ARM (arm64)</p>
+                    </div>
+                </div>
+                <a href="https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-linux-arm64" class="block w-full py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold text-center hover:bg-sky-500/20 transition mono">Download</a>
+                <div class="mt-3 text-[10px] text-slate-600 mono leading-5">
+                    curl -L .../buildguard-linux-arm64 -o buildguard
+                </div>
+            </div>
+            <!-- Windows -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 hover:border-slate-700 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-sm mono font-bold text-slate-400">WIN</div>
+                    <div>
+                        <h3 class="font-bold text-sm">Windows</h3>
+                        <p class="text-slate-500 text-xs mono">x86_64 (amd64)</p>
+                    </div>
+                </div>
+                <a href="https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-windows-amd64.exe" class="block w-full py-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold text-center hover:bg-sky-500/20 transition mono">Download .exe</a>
+                <div class="mt-3 text-[10px] text-slate-600 mono leading-5">
+                    buildguard-windows-amd64.exe
+                </div>
+            </div>
+            <!-- Docker -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 hover:border-slate-700 transition group">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-sm mono font-bold text-sky-400">D</div>
+                    <div>
+                        <h3 class="font-bold text-sm">Docker</h3>
+                        <p class="text-slate-500 text-xs mono">Any platform</p>
+                    </div>
+                </div>
+                <div class="py-2.5 rounded-lg bg-slate-800/50 border border-slate-800 text-slate-400 text-xs text-center mono">
+                    docker run buildflowlabs/buildguard
+                </div>
+                <div class="mt-3 text-[10px] text-slate-600 mono leading-5">
+                    docker run --rm -e GITHUB_TOKEN=$TOKEN buildflowlabs/buildguard scan --org your-org
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <a href="https://github.com/Build-Flow-Labs/buildguard-oss/releases" class="text-sky-400 text-sm mono hover:text-sky-300 transition">View all releases &rarr;</a>
+        </div>
+    </section>
+
+    <!-- ========== INSTALL INSTRUCTIONS ========== -->
+    <section class="max-w-4xl mx-auto px-6 py-24 border-t border-subtle">
+        <div class="text-center mb-12">
+            <p class="section-heading text-sky-500 mb-4">// Quick Install</p>
+            <h2 class="text-3xl font-bold italic">One-line Install</h2>
+        </div>
+        <div class="space-y-6">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">macOS (Apple Silicon)</span>
+                </div>
+                <div class="p-4 mono text-xs text-sky-400 leading-7">
+                    curl -L https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-darwin-arm64 -o buildguard && chmod +x buildguard && sudo mv buildguard /usr/local/bin/
+                </div>
+            </div>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">macOS (Intel)</span>
+                </div>
+                <div class="p-4 mono text-xs text-sky-400 leading-7">
+                    curl -L https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-darwin-amd64 -o buildguard && chmod +x buildguard && sudo mv buildguard /usr/local/bin/
+                </div>
+            </div>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                    <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                    <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">Linux (amd64)</span>
+                </div>
+                <div class="p-4 mono text-xs text-sky-400 leading-7">
+                    curl -L https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-linux-amd64 -o buildguard && chmod +x buildguard && sudo mv buildguard /usr/local/bin/
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CHECKSUM VERIFICATION ========== -->
+    <section class="max-w-4xl mx-auto px-6 py-16 border-t border-subtle">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold">Verify Your Download</h2>
+            <p class="text-slate-400 mt-2 text-sm">Each release includes a <span class="mono text-sky-400">checksums.txt</span> file with SHA256 hashes.</p>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+            <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                <div class="w-2 h-2 rounded-full bg-amber-500/30"></div>
+                <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">Verification</span>
+            </div>
+            <div class="p-4 mono text-xs text-slate-400 leading-7">
+                <div class="text-slate-500"># Download checksums</div>
+                <div class="text-sky-400">curl -L https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/checksums.txt -o checksums.txt</div>
+                <div class="text-slate-500 mt-3"># Verify</div>
+                <div class="text-sky-400">sha256sum -c checksums.txt</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold mb-6">Need 20+ policies, dashboards, or auto-remediation?</h2>
+            <p class="text-slate-500 max-w-lg mx-auto mb-8">BuildGuard Team and Enterprise editions include advanced policies, framework mappings, PDF reports, web dashboard, and more.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/product/pricing.html" class="bg-sky-500 text-slate-950 px-8 py-4 rounded-full font-bold hover:bg-sky-400 transition">View Pricing</a>
+                <a href="mailto:dev@buildflowlabs.com?subject=BuildGuard%20Pricing%20Inquiry" class="border border-slate-800 hover:border-slate-600 px-8 py-4 rounded-full font-bold transition">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="border-t border-slate-800 py-20 px-6 bg-slate-950">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div>
+                <div class="text-xl font-black mono mb-6">BUILD<span class="text-sky-400">FLOW</span>LABS</div>
+                <p class="text-slate-500 text-sm max-w-xs mono">Engineering secure supply chains through Policy-as-Code and Intelligence-grade enablement.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-16">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Product</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/product/buildguard.html" class="hover:text-sky-400 transition">BuildGuard</a></li>
+                        <li><a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a></li>
+                        <li><a href="/product/pricing.html" class="hover:text-sky-400 transition">Pricing</a></li>
+                        <li><a href="/product/downloads.html" class="hover:text-sky-400 transition">Downloads</a></li>
+                        <li><a href="/docs/buildguard-cli.html" class="hover:text-sky-400 transition">CLI Docs</a></li>
+                        <li><a href="/docs/blueprint.html" class="hover:text-sky-400 transition">The Blueprint</a></li>
+                        <li><a href="/capabilities/" class="hover:text-sky-400 transition">Capabilities</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Resources</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/blog/" class="hover:text-sky-400 transition">Blog</a></li>
+                        <li><a href="/whitepapers/sovereign-pipeline.html" class="hover:text-sky-400 transition">Whitepaper</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Company</h4>
+                    <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="mailto:dev@buildflowlabs.com" class="hover:text-sky-400 transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">A.O.E. Holdings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 mono uppercase tracking-[0.2em] gap-4">
+            <span>&copy; 2026 A.O.E. Holdings Group LLC // Build Flow Labs</span>
+            <span>Automating Trust // Engineering Sovereignty</span>
+        </div>
+    </footer>
+
+</body>
+</html>
