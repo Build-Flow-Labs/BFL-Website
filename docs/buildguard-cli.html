@@ -71,6 +71,7 @@
                 <a href="#overview" class="block text-slate-400 hover:text-sky-400 transition">Overview</a>
                 <a href="#installation" class="block text-slate-400 hover:text-sky-400 transition">Installation</a>
                 <a href="#commands" class="block text-slate-400 hover:text-sky-400 transition">Commands</a>
+                <a href="#auth" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard auth</a>
                 <a href="#scan" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard scan</a>
                 <a href="#init" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard init</a>
                 <a href="#validate" class="block text-slate-500 hover:text-sky-400 transition pl-4">buildguard validate</a>
@@ -116,8 +117,8 @@
                     </div>
                     <div class="p-6 mono text-sm text-slate-400">
                         <div class="text-slate-500"># Build from source</div>
-                        <div class="text-sky-400">git clone https://github.com/Build-Flow-Labs/Build-Guard.git</div>
-                        <div class="text-sky-400">cd Build-Guard</div>
+                        <div class="text-sky-400">git clone https://github.com/Build-Flow-Labs/buildguard-oss.git</div>
+                        <div class="text-sky-400">cd buildguard-oss</div>
                         <div class="text-sky-400">go build -o buildguard ./cmd/buildguard</div>
                         <div class="text-slate-500 mt-4"># Verify installation</div>
                         <div class="text-sky-400">./buildguard version</div>
@@ -129,6 +130,37 @@
             <!-- Commands -->
             <section id="commands" class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-slate-100">Commands</h2>
+
+                <!-- auth -->
+                <div id="auth" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
+                    <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard auth</h3>
+                    <p class="text-slate-400 mb-4">Manage GitHub authentication. Opens your browser to create a GitHub Personal Access Token with the required scopes pre-selected, then stores it securely.</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
+                        <div class="text-slate-500"># Authenticate (opens browser)</div>
+                        <div>buildguard auth login</div>
+                        <div class="mt-2 text-slate-500"># Check authentication status</div>
+                        <div>buildguard auth status</div>
+                        <div class="mt-2 text-slate-500"># Clear stored credentials</div>
+                        <div>buildguard auth logout</div>
+                    </div>
+                    <div class="text-sm text-slate-500">
+                        <strong class="text-slate-300">Subcommands:</strong>
+                        <ul class="mt-2 space-y-1 ml-4">
+                            <li>&bull; <code class="mono text-sky-400/80">login</code> &mdash; Opens browser to create PAT with required scopes, stores token securely</li>
+                            <li>&bull; <code class="mono text-sky-400/80">status</code> &mdash; Show current authentication status and token source</li>
+                            <li>&bull; <code class="mono text-sky-400/80">logout</code> &mdash; Remove stored credentials</li>
+                        </ul>
+                    </div>
+                    <div class="text-sm text-slate-500 mt-4">
+                        <strong class="text-slate-300">Token Resolution Order:</strong>
+                        <ol class="mt-2 space-y-1 ml-4 list-decimal list-inside">
+                            <li><code class="mono text-sky-400/80">GITHUB_TOKEN</code> environment variable</li>
+                            <li><code class="mono text-sky-400/80">BUILDGUARD_TOKEN</code> environment variable</li>
+                            <li>Stored credentials (<code class="mono text-sky-400/80">~/.config/buildguard/credentials</code>)</li>
+                            <li>GitHub CLI (<code class="mono text-sky-400/80">gh auth token</code>)</li>
+                        </ol>
+                    </div>
+                </div>
 
                 <!-- scan -->
                 <div id="scan" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
@@ -306,7 +338,11 @@
                 <div class="space-y-4">
                     <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
                         <code class="mono text-sky-400/80 text-sm">GITHUB_TOKEN</code>
-                        <span class="text-slate-500 text-sm">GitHub access token (required for scan)</span>
+                        <span class="text-slate-500 text-sm">GitHub access token (optional if using <code class="mono">buildguard auth login</code>)</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
+                        <code class="mono text-sky-400/80 text-sm">BUILDGUARD_TOKEN</code>
+                        <span class="text-slate-500 text-sm">Alternative to GITHUB_TOKEN</span>
                     </div>
                     <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
                         <code class="mono text-sky-400/80 text-sm">DATABASE_URL</code>
@@ -338,7 +374,7 @@
             <!-- GitHub Action -->
             <section id="github-action" class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-slate-100">GitHub Action</h2>
-                <p class="text-slate-400 mb-6">Use <code class="mono text-sky-400/80">Build-Flow-Labs/Build-Guard@v1</code> in your workflows for automated compliance scanning on every push or PR.</p>
+                <p class="text-slate-400 mb-6">Use <code class="mono text-sky-400/80">Build-Flow-Labs/buildguard-oss@v1</code> in your workflows for automated compliance scanning on every push or PR.</p>
                 <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow mb-8">
                     <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800">
                         <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">.github/workflows/compliance.yml</span>
@@ -351,7 +387,7 @@
                         <div>    <span class="text-sky-400">runs-on</span>: ubuntu-latest</div>
                         <div>    <span class="text-sky-400">steps</span>:</div>
                         <div>      - <span class="text-sky-400">uses</span>: actions/checkout@v4</div>
-                        <div>      - <span class="text-sky-400">uses</span>: Build-Flow-Labs/Build-Guard@v1</div>
+                        <div>      - <span class="text-sky-400">uses</span>: Build-Flow-Labs/buildguard-oss@v1</div>
                         <div>        <span class="text-sky-400">with</span>:</div>
                         <div>          <span class="text-sky-400">github_token</span>: ${{ secrets.GITHUB_TOKEN }}</div>
                         <div>          <span class="text-sky-400">organization</span>: your-org</div>
