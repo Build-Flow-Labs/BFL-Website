@@ -262,7 +262,7 @@
             <!-- Configuration -->
             <section id="configuration" class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-slate-100">Configuration</h2>
-                <p class="text-slate-400 mb-6">BuildGuard reads from a <code class="mono text-sky-400/80">buildguard.json</code> file. Generate one with <code class="mono text-sky-400/80">buildguard init</code> or create it manually:</p>
+                <p class="text-slate-400 mb-6">BuildGuard reads from a <code class="mono text-sky-400/80">buildguard.json</code> file. Generate one with <code class="mono text-sky-400/80">buildguard init</code> or create it manually. The CLI also searches these default locations: <code class="mono text-sky-400/80">buildguard.json</code>, <code class="mono text-sky-400/80">.buildguard.json</code>, <code class="mono text-sky-400/80">config/buildguard.json</code>, <code class="mono text-sky-400/80">~/.buildguard.json</code></p>
                 <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
                     <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800">
                         <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">buildguard.json</span>
@@ -271,17 +271,47 @@
                         <div>{</div>
                         <div>  <span class="text-sky-400">"organization"</span>: {</div>
                         <div>    <span class="text-sky-400">"name"</span>: <span class="text-slate-300">"your-org"</span>,</div>
-                        <div>    <span class="text-sky-400">"default_branch"</span>: <span class="text-slate-300">"main"</span></div>
+                        <div>    <span class="text-sky-400">"default_branch"</span>: <span class="text-slate-300">"main"</span>,</div>
+                        <div>    <span class="text-sky-400">"fallback_branches"</span>: [<span class="text-slate-300">"master"</span>, <span class="text-slate-300">"develop"</span>]</div>
                         <div>  },</div>
                         <div>  <span class="text-sky-400">"policies"</span>: {</div>
-                        <div>    <span class="text-sky-400">"docker_root_user"</span>:   { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"code_owners"</span>:        { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"medium"</span>   },</div>
-                        <div>    <span class="text-sky-400">"secret_exposure"</span>:    { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"branch_protection"</span>:  { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"high"</span>     },</div>
-                        <div>    <span class="text-sky-400">"sox_separation"</span>:     { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> }</div>
+                        <div>    <span class="text-sky-400">"docker_root_user"</span>: {</div>
+                        <div>      <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>,</div>
+                        <div>      <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span></div>
+                        <div>    },</div>
+                        <div>    <span class="text-sky-400">"code_owners"</span>: {</div>
+                        <div>      <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>,</div>
+                        <div>      <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"medium"</span></div>
+                        <div>    },</div>
+                        <div>    <span class="text-sky-400">"secret_exposure"</span>: {</div>
+                        <div>      <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>,</div>
+                        <div>      <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span>,</div>
+                        <div>      <span class="text-sky-400">"patterns"</span>: [<span class="text-slate-300">".env"</span>, <span class="text-slate-300">".env.local"</span>, <span class="text-slate-300">"credentials.json"</span>]</div>
+                        <div>    },</div>
+                        <div>    <span class="text-sky-400">"branch_protection"</span>: {</div>
+                        <div>      <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>,</div>
+                        <div>      <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"high"</span>,</div>
+                        <div>      <span class="text-sky-400">"min_reviewers"</span>: <span class="text-amber-400">1</span>,</div>
+                        <div>      <span class="text-sky-400">"require_dismiss_stale"</span>: <span class="text-amber-400">true</span>,</div>
+                        <div>      <span class="text-sky-400">"require_admin_enforcement"</span>: <span class="text-amber-400">true</span></div>
+                        <div>    },</div>
+                        <div>    <span class="text-sky-400">"sox_separation"</span>: {</div>
+                        <div>      <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>,</div>
+                        <div>      <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span></div>
+                        <div>    }</div>
                         <div>  }</div>
                         <div>}</div>
                     </div>
+                </div>
+                <div class="mt-6 text-sm text-slate-500">
+                    <strong class="text-slate-300">Configuration Options:</strong>
+                    <ul class="mt-3 space-y-2 ml-4">
+                        <li>&bull; <code class="mono text-sky-400/80">organization.fallback_branches</code> &mdash; Branches to check if default_branch doesn't exist</li>
+                        <li>&bull; <code class="mono text-sky-400/80">secret_exposure.patterns</code> &mdash; Additional file patterns to check for secrets</li>
+                        <li>&bull; <code class="mono text-sky-400/80">branch_protection.min_reviewers</code> &mdash; Minimum required reviewers (default: 1)</li>
+                        <li>&bull; <code class="mono text-sky-400/80">branch_protection.require_dismiss_stale</code> &mdash; Require stale review dismissal</li>
+                        <li>&bull; <code class="mono text-sky-400/80">branch_protection.require_admin_enforcement</code> &mdash; Require admins to follow rules</li>
+                    </ul>
                 </div>
             </section>
 
