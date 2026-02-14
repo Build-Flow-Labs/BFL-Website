@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BuildGuard CLI Documentation | Build Flow Labs</title>
-    <meta name="description" content="Technical documentation for the BuildGuard CLI - compliance scanning, auto-remediation, and evidence logging for GitHub organizations.">
+    <meta name="description" content="Technical documentation for the BuildGuard CLI - compliance scanning for GitHub organizations with 5 built-in policies.">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta property="og:title" content="BuildGuard CLI Documentation | Build Flow Labs">
-    <meta property="og:description" content="Technical docs for the BuildGuard CLI - compliance scanning, auto-remediation, and evidence logging for GitHub orgs.">
+    <meta property="og:description" content="Technical docs for the BuildGuard CLI - compliance scanning for GitHub orgs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://info.buildflowlabs.com/docs/buildguard-cli.html">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="BuildGuard CLI Documentation | Build Flow Labs">
-    <meta name="twitter:description" content="Technical docs for the BuildGuard CLI - compliance scanning, auto-remediation, and evidence logging for GitHub orgs.">
+    <meta name="twitter:description" content="Technical docs for the BuildGuard CLI - compliance scanning for GitHub orgs.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -79,7 +79,7 @@
                 <a href="#configuration" class="block text-slate-400 hover:text-sky-400 transition">Configuration</a>
                 <a href="#policies" class="block text-slate-400 hover:text-sky-400 transition">Policies</a>
                 <a href="#environment" class="block text-slate-400 hover:text-sky-400 transition">Environment</a>
-                <a href="#github-action" class="block text-slate-400 hover:text-sky-400 transition">GitHub Action</a>
+                <a href="#ci-integration" class="block text-slate-400 hover:text-sky-400 transition">CI Integration</a>
             </nav>
         </aside>
 
@@ -88,26 +88,44 @@
             <header class="mb-16">
                 <div class="text-sky-500 mono text-xs font-bold uppercase tracking-widest mb-4">// Technical Documentation</div>
                 <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">BuildGuard CLI</h1>
-                <p class="text-slate-400 text-lg">Compliance scanning, auto-remediation, and evidence logging for GitHub organizations.</p>
+                <p class="text-slate-400 text-lg">Compliance scanning for GitHub organizations.</p>
             </header>
 
             <!-- Overview -->
             <section id="overview" class="mb-16">
                 <h2 class="text-2xl font-bold mb-4 text-slate-100">Overview</h2>
                 <p class="text-slate-400 leading-relaxed mb-4">
-                    BuildGuard is a Go-based CLI that scans GitHub organizations for compliance violations across 23 built-in policies. It evaluates repository configurations, branch protection rules, file contents, and CI/CD settings against security and governance standards.
+                    BuildGuard is a Go-based CLI that scans GitHub organizations for compliance violations. The open-source version includes 5 built-in policies covering Docker security, code ownership, secret exposure, branch protection, and SOX separation of duties.
                 </p>
                 <p class="text-slate-400 leading-relaxed mb-4">
-                    Results are mapped to 8 compliance frameworks (SOC2, SOX, NIST 800-53, ISO 27001, PCI-DSS, FedRAMP, CIS, HIPAA) covering 100+ specific controls. Findings are recorded in a PostgreSQL evidence ledger, and violations can be auto-remediated via pull requests.
+                    Results are displayed in a human-readable table format or exported as JSON Lines for SIEM ingestion (Splunk, Wazuh, Elastic).
                 </p>
                 <p class="text-slate-400 leading-relaxed">
-                    For the full product overview including policy details and framework mappings, see the <a href="/product/buildguard.html" class="text-sky-400 hover:text-sky-300 transition">BuildGuard product page</a>.
+                    For the full product overview including additional policies and framework mappings, see the <a href="/product/buildguard.html" class="text-sky-400 hover:text-sky-300 transition">BuildGuard product page</a>.
                 </p>
             </section>
 
             <!-- Installation -->
             <section id="installation" class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-slate-100">Installation</h2>
+
+                <h3 class="text-lg font-bold mb-4 text-slate-200">Homebrew (Recommended)</h3>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow mb-6">
+                    <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800 flex gap-2 items-center">
+                        <div class="w-2 h-2 rounded-full bg-slate-700"></div>
+                        <div class="w-2 h-2 rounded-full bg-slate-700"></div>
+                        <div class="w-2 h-2 rounded-full bg-sky-500/50"></div>
+                        <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">terminal</span>
+                    </div>
+                    <div class="p-6 mono text-sm text-slate-400">
+                        <div class="text-slate-500"># Install via Homebrew</div>
+                        <div class="text-sky-400">brew install build-flow-labs/buildguard/buildguard</div>
+                        <div class="text-slate-500 mt-4"># Verify installation</div>
+                        <div class="text-sky-400">buildguard version</div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold mb-4 text-slate-200">Direct Download</h3>
                 <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
                     <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800 flex gap-2 items-center">
                         <div class="w-2 h-2 rounded-full bg-slate-700"></div>
@@ -116,15 +134,15 @@
                         <span class="ml-3 text-[10px] text-slate-600 mono uppercase tracking-widest">terminal</span>
                     </div>
                     <div class="p-6 mono text-sm text-slate-400">
-                        <div class="text-slate-500"># Build from source</div>
-                        <div class="text-sky-400">git clone https://github.com/Build-Flow-Labs/buildguard-oss.git</div>
-                        <div class="text-sky-400">cd buildguard-oss</div>
-                        <div class="text-sky-400">go build -o buildguard ./cmd/buildguard</div>
+                        <div class="text-slate-500"># Download binary (macOS Apple Silicon)</div>
+                        <div class="text-sky-400">curl -L https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-darwin-arm64 -o buildguard</div>
+                        <div class="text-sky-400">chmod +x buildguard</div>
+                        <div class="text-sky-400">sudo mv buildguard /usr/local/bin/</div>
                         <div class="text-slate-500 mt-4"># Verify installation</div>
-                        <div class="text-sky-400">./buildguard version</div>
-                        <div class="text-slate-300 mt-1">buildguard version 1.0.0</div>
+                        <div class="text-sky-400">buildguard version</div>
                     </div>
                 </div>
+                <p class="text-slate-500 text-sm mt-4">See the <a href="/product/downloads.html" class="text-sky-400 hover:text-sky-300 transition">Downloads page</a> for all platforms.</p>
             </section>
 
             <!-- Commands -->
@@ -134,7 +152,7 @@
                 <!-- auth -->
                 <div id="auth" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
                     <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard auth</h3>
-                    <p class="text-slate-400 mb-4">Manage GitHub authentication. Opens your browser to create a GitHub Personal Access Token with the required scopes pre-selected, then stores it securely.</p>
+                    <p class="text-slate-400 mb-4">Manage GitHub authentication. Opens your browser to create a GitHub Personal Access Token with the required scopes (<code class="mono text-sky-400/80">repo</code>, <code class="mono text-sky-400/80">read:org</code>) pre-selected, then stores it securely.</p>
                     <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
                         <div class="text-slate-500"># Authenticate (opens browser)</div>
                         <div>buildguard auth login</div>
@@ -146,7 +164,7 @@
                     <div class="text-sm text-slate-500">
                         <strong class="text-slate-300">Subcommands:</strong>
                         <ul class="mt-2 space-y-1 ml-4">
-                            <li>&bull; <code class="mono text-sky-400/80">login</code> &mdash; Opens browser to create PAT with required scopes, stores token securely</li>
+                            <li>&bull; <code class="mono text-sky-400/80">login</code> &mdash; Opens browser to create PAT, stores token in <code class="mono text-sky-400/80">~/.config/buildguard/credentials</code></li>
                             <li>&bull; <code class="mono text-sky-400/80">status</code> &mdash; Show current authentication status and token source</li>
                             <li>&bull; <code class="mono text-sky-400/80">logout</code> &mdash; Remove stored credentials</li>
                         </ul>
@@ -165,26 +183,31 @@
                 <!-- scan -->
                 <div id="scan" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
                     <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard scan</h3>
-                    <p class="text-slate-400 mb-4">Runs a compliance audit across all repositories in a GitHub organization. Evaluates 23 policies, records results in the evidence ledger, and optionally opens auto-remediation PRs.</p>
+                    <p class="text-slate-400 mb-4">Runs a compliance audit across all repositories in a GitHub organization. Evaluates 5 built-in policies and displays a compliance summary.</p>
                     <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
                         <div class="text-slate-500"># Basic scan</div>
                         <div>buildguard scan --org your-org</div>
-                        <div class="mt-2 text-slate-500"># Dry run (no DB, no PRs)</div>
-                        <div>buildguard scan --org your-org --dry-run --skip-db</div>
-                        <div class="mt-2 text-slate-500"># Export reports</div>
-                        <div>buildguard scan --org your-org --export-html report.html --export-json report.json</div>
-                        <div class="mt-2 text-slate-500"># With config file</div>
+                        <div class="mt-2 text-slate-500"># Scan with config file</div>
                         <div>buildguard scan --org your-org --config buildguard.json</div>
+                        <div class="mt-2 text-slate-500"># Output for SIEM ingestion (JSON Lines)</div>
+                        <div>buildguard scan --org your-org --format jsonl</div>
+                        <div class="mt-2 text-slate-500"># Dry run (preview what would be scanned)</div>
+                        <div>buildguard scan --org your-org --dry-run</div>
                     </div>
                     <div class="text-sm text-slate-500">
                         <strong class="text-slate-300">Flags:</strong>
                         <ul class="mt-2 space-y-1 ml-4">
                             <li>&bull; <code class="mono text-sky-400/80">--org, -o</code> &mdash; GitHub organization to scan (required)</li>
                             <li>&bull; <code class="mono text-sky-400/80">--config, -c</code> &mdash; Path to buildguard.json configuration file</li>
-                            <li>&bull; <code class="mono text-sky-400/80">--dry-run</code> &mdash; Run without making changes or creating remediation PRs</li>
-                            <li>&bull; <code class="mono text-sky-400/80">--skip-db</code> &mdash; Skip recording results to the database</li>
-                            <li>&bull; <code class="mono text-sky-400/80">--export-json &lt;path&gt;</code> &mdash; Export results as a JSON report</li>
-                            <li>&bull; <code class="mono text-sky-400/80">--export-html &lt;path&gt;</code> &mdash; Export results as an HTML report</li>
+                            <li>&bull; <code class="mono text-sky-400/80">--format, -f</code> &mdash; Output format: <code class="mono text-sky-400/80">pretty</code> (default) or <code class="mono text-sky-400/80">jsonl</code></li>
+                            <li>&bull; <code class="mono text-sky-400/80">--dry-run</code> &mdash; Run without making changes</li>
+                        </ul>
+                    </div>
+                    <div class="text-sm text-slate-500 mt-4">
+                        <strong class="text-slate-300">Output Formats:</strong>
+                        <ul class="mt-2 space-y-1 ml-4">
+                            <li>&bull; <code class="mono text-sky-400/80">pretty</code> &mdash; Human-readable table with compliance score and policy breakdown</li>
+                            <li>&bull; <code class="mono text-sky-400/80">jsonl</code> &mdash; JSON Lines format for SIEM ingestion (Wazuh, Splunk, Elastic)</li>
                         </ul>
                     </div>
                 </div>
@@ -192,17 +215,18 @@
                 <!-- init -->
                 <div id="init" class="mb-12 p-8 border border-slate-800 rounded-2xl bg-slate-900/20">
                     <h3 class="mono text-sky-400 font-bold text-lg mb-3">buildguard init</h3>
-                    <p class="text-slate-400 mb-4">Interactive setup wizard that creates a <code class="mono text-sky-400/80">buildguard.json</code> configuration file. Prompts for organization name, default branch, reviewer, auto-remediation settings, and per-policy enablement.</p>
+                    <p class="text-slate-400 mb-4">Interactive setup wizard that creates a <code class="mono text-sky-400/80">buildguard.json</code> configuration file. Prompts for organization name, default branch, and per-policy enablement.</p>
                     <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
                         <div class="text-sky-400">$ buildguard init</div>
                         <div class="mt-1 text-slate-500">BuildGuard Configuration Wizard</div>
-                        <div class="text-slate-300 mt-2">GitHub Organization: <span class="text-sky-400">acme-corp</span></div>
+                        <div class="text-slate-300 mt-2">GitHub Organization name: <span class="text-sky-400">acme-corp</span></div>
                         <div class="text-slate-300">Default branch [main]: <span class="text-sky-400">main</span></div>
-                        <div class="text-slate-300">Default reviewer: <span class="text-sky-400">@platform-team</span></div>
-                        <div class="text-slate-300">Enable auto-remediation? [Y/n]: <span class="text-sky-400">Y</span></div>
-                        <div class="text-slate-300 mt-2">Enable POL-SEC-01 (Docker Root User)? [Y/n]: <span class="text-sky-400">Y</span></div>
-                        <div class="text-slate-300">Enable POL-GOV-02 (CODEOWNERS)? [Y/n]: <span class="text-sky-400">Y</span></div>
-                        <div class="text-slate-600">...</div>
+                        <div class="text-slate-300 mt-2">Enable Docker root user check (POL-SEC-01)? [Y/n]: <span class="text-sky-400">Y</span></div>
+                        <div class="text-slate-300">Enable CODEOWNERS check (POL-GOV-02)? [Y/n]: <span class="text-sky-400">Y</span></div>
+                        <div class="text-slate-300">Enable secret exposure check (POL-SEC-03)? [Y/n]: <span class="text-sky-400">Y</span></div>
+                        <div class="text-slate-300">Enable branch protection check (POL-SEC-04)? [Y/n]: <span class="text-sky-400">Y</span></div>
+                        <div class="text-slate-300">Enable SOX separation check (POL-SOX-01)? [Y/n]: <span class="text-sky-400">Y</span></div>
+                        <div class="text-slate-300 mt-2">Configuration file path [buildguard.json]: <span class="text-sky-400">buildguard.json</span></div>
                         <div class="text-sky-400 mt-2">Configuration saved to buildguard.json</div>
                     </div>
                 </div>
@@ -213,15 +237,13 @@
                     <p class="text-slate-400 mb-4">Validates a <code class="mono text-sky-400/80">buildguard.json</code> configuration file and displays the parsed settings.</p>
                     <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400 mb-4">
                         <div class="text-sky-400">$ buildguard validate --config buildguard.json</div>
-                        <div class="mt-1 text-slate-300">Configuration is valid.</div>
-                        <div class="text-slate-500 mt-1">Organization: acme-corp</div>
-                        <div class="text-slate-500">Policies enabled: 20/20</div>
-                        <div class="text-slate-500">Auto-remediation: enabled</div>
+                        <div class="text-slate-300 mt-1">Validating buildguard.json...</div>
+                        <div class="text-slate-500 mt-1">Configuration is valid! (5/5 policies enabled)</div>
                     </div>
                     <div class="text-sm text-slate-500">
                         <strong class="text-slate-300">Flags:</strong>
                         <ul class="mt-2 space-y-1 ml-4">
-                            <li>&bull; <code class="mono text-sky-400/80">--config</code> &mdash; Path to the configuration file to validate</li>
+                            <li>&bull; <code class="mono text-sky-400/80">--config, -c</code> &mdash; Path to the configuration file to validate (defaults to <code class="mono text-sky-400/80">buildguard.json</code>)</li>
                         </ul>
                     </div>
                 </div>
@@ -232,7 +254,7 @@
                     <p class="text-slate-400 mb-4">Displays the current BuildGuard version.</p>
                     <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 mono text-xs text-slate-400">
                         <div class="text-sky-400">$ buildguard version</div>
-                        <div class="text-slate-300 mt-1">buildguard version 1.0.0</div>
+                        <div class="text-slate-300 mt-1">BuildGuard version 0.2.0</div>
                     </div>
                 </div>
             </section>
@@ -252,43 +274,11 @@
                         <div>    <span class="text-sky-400">"default_branch"</span>: <span class="text-slate-300">"main"</span></div>
                         <div>  },</div>
                         <div>  <span class="text-sky-400">"policies"</span>: {</div>
-                        <div>    <span class="text-sky-400">"docker_root_user"</span>:    { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"code_owners"</span>:         { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"secret_exposure"</span>:     { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"branch_protection"</span>:   { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"sox_separation"</span>:      { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"ci_pipeline"</span>:         { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"license_file"</span>:        { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"security_policy"</span>:     { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"actions_pinning"</span>:     { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"default_branch_naming"</span>: { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"info"</span> },</div>
-                        <div>    <span class="text-sky-400">"signed_commits"</span>:       { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"dependabot_enabled"</span>:   { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"readme_required"</span>:      { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"info"</span> },</div>
-                        <div>    <span class="text-sky-400">"workflow_permissions"</span>: { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"pr_template"</span>:          { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"info"</span> },</div>
-                        <div>    <span class="text-sky-400">"vuln_scanning"</span>:        { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"cicd_hardening"</span>:       { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"high"</span> },</div>
-                        <div>    <span class="text-sky-400">"sbom_generation"</span>:      { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"medium"</span>  },</div>
-                        <div>    <span class="text-sky-400">"access_review"</span>:        { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"high"</span> },</div>
-                        <div>    <span class="text-sky-400">"repo_classification"</span>:  { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"medium"</span>  },</div>
-                        <div>    <span class="text-sky-400">"force_push_protection"</span>: { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
-                        <div>    <span class="text-sky-400">"audit_log_retention"</span>:  { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"warning"</span>  },</div>
-                        <div>    <span class="text-sky-400">"mfa_enforcement"</span>:      { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> }</div>
-                        <div>  },</div>
-                        <div>  <span class="text-sky-400">"remediation"</span>: {</div>
-                        <div>    <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>,</div>
-                        <div>    <span class="text-sky-400">"branch_prefix"</span>: <span class="text-slate-300">"buildguard/fix-"</span>,</div>
-                        <div>    <span class="text-sky-400">"default_reviewer"</span>: <span class="text-slate-300">"@your-team"</span></div>
-                        <div>  },</div>
-                        <div>  <span class="text-sky-400">"filter"</span>: {</div>
-                        <div>    <span class="text-sky-400">"include_repos"</span>: [],</div>
-                        <div>    <span class="text-sky-400">"exclude_repos"</span>: [],</div>
-                        <div>    <span class="text-sky-400">"exclude_archived"</span>: <span class="text-amber-400">true</span></div>
-                        <div>  },</div>
-                        <div>  <span class="text-sky-400">"custom_policies"</span>: {</div>
-                        <div>    <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">false</span>,</div>
-                        <div>    <span class="text-sky-400">"policies_dir"</span>: <span class="text-slate-300">"./policies/custom"</span></div>
+                        <div>    <span class="text-sky-400">"docker_root_user"</span>:   { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
+                        <div>    <span class="text-sky-400">"code_owners"</span>:        { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"medium"</span>   },</div>
+                        <div>    <span class="text-sky-400">"secret_exposure"</span>:    { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> },</div>
+                        <div>    <span class="text-sky-400">"branch_protection"</span>:  { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"high"</span>     },</div>
+                        <div>    <span class="text-sky-400">"sox_separation"</span>:     { <span class="text-sky-400">"enabled"</span>: <span class="text-amber-400">true</span>, <span class="text-sky-400">"severity"</span>: <span class="text-slate-300">"critical"</span> }</div>
                         <div>  }</div>
                         <div>}</div>
                     </div>
@@ -298,7 +288,7 @@
             <!-- Policies -->
             <section id="policies" class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-slate-100">Built-in Policies</h2>
-                <p class="text-slate-400 mb-6">All 23 policies are enabled by default. Disable or change severity per-policy in <code class="mono text-sky-400/80">buildguard.json</code>.</p>
+                <p class="text-slate-400 mb-6">BuildGuard OSS includes 5 built-in policies. All are enabled by default. Disable or change severity per-policy in <code class="mono text-sky-400/80">buildguard.json</code>.</p>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
@@ -306,35 +296,20 @@
                                 <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">ID</th>
                                 <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Name</th>
                                 <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Severity</th>
-                                <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Auto-Fix</th>
+                                <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Description</th>
                             </tr>
                         </thead>
                         <tbody class="text-slate-400">
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-01</td><td class="py-2 px-3">Docker Root User Detection</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-green-400">Yes</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-02</td><td class="py-2 px-3">CODEOWNERS Enforcement</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-green-400">Yes</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-03</td><td class="py-2 px-3">Secret Exposure Prevention</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-04</td><td class="py-2 px-3">Branch Protection Validation</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SOX-01</td><td class="py-2 px-3">SOX Separation of Duties</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-05</td><td class="py-2 px-3">CI Pipeline Required</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-06</td><td class="py-2 px-3">License File Required</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-03</td><td class="py-2 px-3">Security Policy Required</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-07</td><td class="py-2 px-3">GitHub Actions Pinning</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-04</td><td class="py-2 px-3">Default Branch Naming</td><td class="py-2 px-3"><span class="text-slate-400">Info</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-08</td><td class="py-2 px-3">Signed Commits Required</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-09</td><td class="py-2 px-3">Dependabot Enabled</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-05</td><td class="py-2 px-3">README Required</td><td class="py-2 px-3"><span class="text-slate-400">Info</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-10</td><td class="py-2 px-3">Workflow Permissions Restricted</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-06</td><td class="py-2 px-3">PR Template Required</td><td class="py-2 px-3"><span class="text-slate-400">Info</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-11</td><td class="py-2 px-3">Dependency Vulnerability Scanning</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-12</td><td class="py-2 px-3">CI/CD Pipeline Hardening</td><td class="py-2 px-3"><span class="text-red-400">High</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-13</td><td class="py-2 px-3">SBOM Generation</td><td class="py-2 px-3"><span class="text-amber-400">Medium</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-07</td><td class="py-2 px-3">Access Review</td><td class="py-2 px-3"><span class="text-red-400">High</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-08</td><td class="py-2 px-3">Repository Classification</td><td class="py-2 px-3"><span class="text-amber-400">Medium</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-14</td><td class="py-2 px-3">Force Push Protection</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-09</td><td class="py-2 px-3">Audit Log Retention</td><td class="py-2 px-3"><span class="text-amber-400">Warning</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
-                            <tr><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-15</td><td class="py-2 px-3">MFA Enforcement</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-600">No</td></tr>
+                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-01</td><td class="py-2 px-3">Docker Root User</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-500">Detects Dockerfiles running as root user</td></tr>
+                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-GOV-02</td><td class="py-2 px-3">CODEOWNERS</td><td class="py-2 px-3"><span class="text-amber-400">Medium</span></td><td class="py-2 px-3 text-slate-500">Enforces presence of CODEOWNERS file</td></tr>
+                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-03</td><td class="py-2 px-3">Secret Exposure</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-500">Prevents secrets from being committed</td></tr>
+                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SEC-04</td><td class="py-2 px-3">Branch Protection</td><td class="py-2 px-3"><span class="text-orange-400">High</span></td><td class="py-2 px-3 text-slate-500">Validates branch protection rules are enabled</td></tr>
+                            <tr><td class="py-2 px-3 mono text-sky-400 text-xs">POL-SOX-01</td><td class="py-2 px-3">SOX Separation</td><td class="py-2 px-3"><span class="text-red-400">Critical</span></td><td class="py-2 px-3 text-slate-500">Enforces separation of duties for SOX compliance</td></tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-8 p-4 bg-sky-500/5 border border-sky-500/20 rounded-lg">
+                    <p class="text-slate-400 text-sm"><strong class="text-sky-400">Need more policies?</strong> BuildGuard Team and Enterprise include 20+ policies with framework mappings (SOC2, SOX, NIST 800-53, ISO 27001, PCI-DSS, FedRAMP, CIS, HIPAA). <a href="/product/pricing.html" class="text-sky-400 hover:text-sky-300 transition">View pricing &rarr;</a></p>
                 </div>
             </section>
 
@@ -351,94 +326,81 @@
                         <span class="text-slate-500 text-sm">Alternative to GITHUB_TOKEN</span>
                     </div>
                     <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">DATABASE_URL</code>
-                        <span class="text-slate-500 text-sm">PostgreSQL connection string for evidence ledger</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
                         <code class="mono text-sky-400/80 text-sm">BUILDGUARD_ORG</code>
-                        <span class="text-slate-500 text-sm">Default organization name</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">BUILDGUARD_DEFAULT_BRANCH</code>
-                        <span class="text-slate-500 text-sm">Default branch to check</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">BUILDGUARD_SLACK_WEBHOOK</code>
-                        <span class="text-slate-500 text-sm">Slack webhook URL for notifications</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">BUILDGUARD_CUSTOM_POLICIES_DIR</code>
-                        <span class="text-slate-500 text-sm">Directory for custom .rego policy files</span>
+                        <span class="text-slate-500 text-sm">Default organization name (overridden by --org flag)</span>
                     </div>
                     <div class="flex flex-col md:flex-row justify-between py-3 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">BUILDGUARD_DISABLE_REMEDIATION</code>
-                        <span class="text-slate-500 text-sm">Set to "true" to disable auto-remediation PRs</span>
+                        <code class="mono text-sky-400/80 text-sm">BUILDGUARD_DEFAULT_BRANCH</code>
+                        <span class="text-slate-500 text-sm">Default branch to check (defaults to main)</span>
                     </div>
                 </div>
             </section>
 
-            <!-- GitHub Action -->
-            <section id="github-action" class="mb-16">
-                <h2 class="text-2xl font-bold mb-6 text-slate-100">GitHub Action</h2>
-                <p class="text-slate-400 mb-6">Use <code class="mono text-sky-400/80">Build-Flow-Labs/buildguard-oss@v1</code> in your workflows for automated compliance scanning on every push or PR.</p>
+            <!-- CI Integration -->
+            <section id="ci-integration" class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 text-slate-100">CI Integration</h2>
+                <p class="text-slate-400 mb-6">Run BuildGuard in your CI pipeline using the pre-built binaries or Docker image.</p>
+
+                <h3 class="text-lg font-bold mb-4 text-slate-200">GitHub Actions Example</h3>
                 <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow mb-8">
                     <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800">
                         <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">.github/workflows/compliance.yml</span>
                     </div>
                     <div class="p-6 mono text-xs text-slate-400 leading-6">
-                        <div><span class="text-sky-400">name</span>: BuildGuard Compliance</div>
-                        <div><span class="text-sky-400">on</span>: [push, pull_request]</div>
+                        <div><span class="text-sky-400">name</span>: Compliance Scan</div>
+                        <div><span class="text-sky-400">on</span>:</div>
+                        <div>  <span class="text-sky-400">schedule</span>:</div>
+                        <div>    - <span class="text-sky-400">cron</span>: <span class="text-slate-300">'0 6 * * *'</span>  <span class="text-slate-600"># Daily at 6am</span></div>
+                        <div>  <span class="text-sky-400">workflow_dispatch</span>:</div>
+                        <div></div>
                         <div><span class="text-sky-400">jobs</span>:</div>
-                        <div>  <span class="text-sky-400">compliance</span>:</div>
+                        <div>  <span class="text-sky-400">scan</span>:</div>
                         <div>    <span class="text-sky-400">runs-on</span>: ubuntu-latest</div>
                         <div>    <span class="text-sky-400">steps</span>:</div>
-                        <div>      - <span class="text-sky-400">uses</span>: actions/checkout@v4</div>
-                        <div>      - <span class="text-sky-400">uses</span>: Build-Flow-Labs/buildguard-oss@v1</div>
-                        <div>        <span class="text-sky-400">with</span>:</div>
-                        <div>          <span class="text-sky-400">github_token</span>: ${{ secrets.GITHUB_TOKEN }}</div>
-                        <div>          <span class="text-sky-400">organization</span>: your-org</div>
-                        <div>          <span class="text-sky-400">config_path</span>: .github/buildguard.json</div>
-                        <div>          <span class="text-sky-400">fail_on_violation</span>: true</div>
-                        <div>          <span class="text-sky-400">database_url</span>: ${{ secrets.DATABASE_URL }}</div>
+                        <div>      - <span class="text-sky-400">name</span>: Install BuildGuard</div>
+                        <div>        <span class="text-sky-400">run</span>: |</div>
+                        <div>          curl -L https://github.com/Build-Flow-Labs/buildguard-oss/releases/latest/download/buildguard-linux-amd64 -o buildguard</div>
+                        <div>          chmod +x buildguard</div>
+                        <div></div>
+                        <div>      - <span class="text-sky-400">name</span>: Run Compliance Scan</div>
+                        <div>        <span class="text-sky-400">env</span>:</div>
+                        <div>          <span class="text-sky-400">GITHUB_TOKEN</span>: ${{ secrets.GITHUB_TOKEN }}</div>
+                        <div>        <span class="text-sky-400">run</span>: ./buildguard scan --org your-org</div>
                     </div>
                 </div>
 
-                <h3 class="text-lg font-bold mb-4 text-slate-200">Action Inputs</h3>
-                <div class="overflow-x-auto mb-8">
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="border-b-2 border-slate-800">
-                                <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Input</th>
-                                <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Required</th>
-                                <th class="text-left py-3 px-3 text-[10px] text-slate-500 mono uppercase tracking-widest">Description</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-slate-400">
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400/80 text-xs">github_token</td><td class="py-2 px-3">Yes</td><td class="py-2 px-3">GitHub token with repo access</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400/80 text-xs">organization</td><td class="py-2 px-3">Yes</td><td class="py-2 px-3">GitHub organization to scan</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400/80 text-xs">config_path</td><td class="py-2 px-3">No</td><td class="py-2 px-3">Path to buildguard.json config file</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400/80 text-xs">policies</td><td class="py-2 px-3">No</td><td class="py-2 px-3">Comma-separated policy list (empty = all)</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400/80 text-xs">fail_on_violation</td><td class="py-2 px-3">No</td><td class="py-2 px-3">Fail the workflow if violations are found</td></tr>
-                            <tr class="border-b border-slate-800/50"><td class="py-2 px-3 mono text-sky-400/80 text-xs">dry_run</td><td class="py-2 px-3">No</td><td class="py-2 px-3">Run without creating remediation PRs</td></tr>
-                            <tr><td class="py-2 px-3 mono text-sky-400/80 text-xs">database_url</td><td class="py-2 px-3">No</td><td class="py-2 px-3">PostgreSQL connection string for audit logging</td></tr>
-                        </tbody>
-                    </table>
+                <h3 class="text-lg font-bold mb-4 text-slate-200">Docker Example</h3>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden terminal-glow">
+                    <div class="px-4 py-2 bg-slate-800/30 border-b border-slate-800">
+                        <span class="text-[10px] text-slate-600 mono uppercase tracking-widest">terminal</span>
+                    </div>
+                    <div class="p-6 mono text-xs text-slate-400 leading-6">
+                        <div class="text-slate-500"># Run with Docker</div>
+                        <div class="text-sky-400">docker run --rm -e GITHUB_TOKEN=$GITHUB_TOKEN \</div>
+                        <div class="text-sky-400">  buildflowlabs/buildguard scan --org your-org</div>
+                        <div class="mt-4 text-slate-500"># Output JSONL for SIEM ingestion</div>
+                        <div class="text-sky-400">docker run --rm -e GITHUB_TOKEN=$GITHUB_TOKEN \</div>
+                        <div class="text-sky-400">  buildflowlabs/buildguard scan --org your-org --format jsonl \</div>
+                        <div class="text-sky-400">  &gt;&gt; /var/log/buildguard/scan.log</div>
+                    </div>
                 </div>
+            </section>
 
-                <h3 class="text-lg font-bold mb-4 text-slate-200">Action Outputs</h3>
-                <div class="space-y-4">
-                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">repos_scanned</code>
-                        <span class="text-slate-500 text-sm">Number of repositories scanned</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between py-3 border-b border-slate-800 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">violations_found</code>
-                        <span class="text-slate-500 text-sm">Number of violations found</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between py-3 gap-2">
-                        <code class="mono text-sky-400/80 text-sm">scan_result</code>
-                        <span class="text-slate-500 text-sm">JSON summary of scan results</span>
-                    </div>
+            <!-- CTA -->
+            <section class="p-8 bg-sky-500/5 border border-sky-500/20 rounded-2xl">
+                <h2 class="text-xl font-bold mb-3 text-slate-100">Need More?</h2>
+                <p class="text-slate-400 mb-6">BuildGuard Team and Enterprise include:</p>
+                <ul class="text-slate-400 text-sm space-y-2 mb-6">
+                    <li>&bull; 20+ policies with auto-remediation</li>
+                    <li>&bull; Framework mappings (SOC2, SOX, NIST, ISO 27001, PCI-DSS, FedRAMP, CIS, HIPAA)</li>
+                    <li>&bull; HTML, JSON, and PDF reports</li>
+                    <li>&bull; PostgreSQL evidence ledger</li>
+                    <li>&bull; Web dashboard</li>
+                    <li>&bull; Slack/email notifications</li>
+                </ul>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="/product/pricing.html" class="bg-sky-500 text-slate-950 px-6 py-3 rounded-lg font-bold text-sm text-center hover:bg-sky-400 transition">View Pricing</a>
+                    <a href="mailto:advisory@buildflowlabs.com" class="border border-slate-700 px-6 py-3 rounded-lg font-bold text-sm text-center hover:border-slate-500 transition">Contact Sales</a>
                 </div>
             </section>
 
