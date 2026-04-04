@@ -37,11 +37,11 @@
             </a>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
-                <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
-                <a href="#consulting" class="hover:text-sky-400 transition">Advisory</a>
+                <a href="/product/bcoc.html" class="hover:text-sky-400 transition">BCoC</a>
+                <a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a>
+                <a href="/book.html" class="hover:text-sky-400 transition">Book</a>
                 <a href="/research/" class="hover:text-sky-400 transition">Research</a>
                 <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
-                <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Docs</a>
             </div>
             <a href="mailto:advisory@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
             <!-- Mobile hamburger -->
@@ -56,11 +56,11 @@
     <!-- Mobile menu overlay -->
     <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
         <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BuildFlow Trust</a>
-        <a href="/product/pbom.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">PBOM</a>
-        <a href="#consulting" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Advisory</a>
+        <a href="/product/bcoc.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">BCoC</a>
+        <a href="/speaking.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Speaking</a>
+        <a href="/book.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Book</a>
         <a href="/research/" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Research</a>
         <a href="/blog/" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Insights</a>
-        <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition" onclick="closeMobileMenu()">Docs</a>
         <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
     </div>
 
@@ -127,7 +127,7 @@
             <span class="mono font-bold text-sm tracking-widest italic">#REGO/OPA</span>
             <span class="mono font-bold text-sm tracking-widest italic">#KUBERNETES</span>
             <span class="mono font-bold text-sm tracking-widest italic">#CI/CD_SEC</span>
-            <span class="mono font-bold text-sm tracking-widest italic">#PBOM</span>
+            <span class="mono font-bold text-sm tracking-widest italic">#BCoC</span>
             <span class="mono font-bold text-sm tracking-widest italic">#NIST_800-161</span>
         </div>
     </div>
@@ -151,7 +151,7 @@
                 <div class="text-sky-500 mono text-xs font-bold mb-4 uppercase tracking-widest">// 02</div>
                 <h3 class="text-xl font-bold mb-3">Forensic Attestation</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">
-                    Our PBOM creates an immutable audit trail. If a container is compromised 6 months later, prove exactly which human, runner, and compiler produced that layer.
+                    Our Build Chain of Custody (BCoC) creates an immutable audit trail. If a container is compromised 6 months later, prove exactly which human, runner, and compiler produced that layer.
                 </p>
             </div>
             <div>
@@ -189,7 +189,7 @@
                 </div>
                 <div>
                     <h4 class="text-slate-200 font-bold mb-3 mono text-sm uppercase tracking-tighter underline decoration-sky-500 decoration-2 underline-offset-8">02. Chain of Custody</h4>
-                    <p class="text-slate-500 text-sm">Deployment of Verifiable Pipeline Bill of Materials (PBOM) to ensure artifact integrity from origin to production.</p>
+                    <p class="text-slate-500 text-sm">Deployment of Build Chain of Custody (BCoC) records to ensure artifact integrity from origin to production.</p>
                 </div>
                 <div>
                     <h4 class="text-slate-200 font-bold mb-3 mono text-sm uppercase tracking-tighter underline decoration-sky-500 decoration-2 underline-offset-8">03. Crisis Remediation</h4>
@@ -279,8 +279,8 @@
         </div>
     </section>
 
-    <!-- ========== PBOM PRODUCT ========== -->
-    <section id="pbom" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
+    <!-- ========== BUILD CHAIN OF CUSTODY (BCoC) ========== -->
+    <section id="bcoc" class="max-w-7xl mx-auto px-6 py-32 border-t border-subtle bg-blue-glow">
         <div class="grid lg:grid-cols-2 gap-20 items-center">
             <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden terminal-glow order-2 lg:order-1">
                 <div class="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center gap-2">
@@ -308,9 +308,9 @@
             </div>
             <div class="order-1 lg:order-2">
                 <p class="section-heading text-sky-500 mb-4">// PIPELINE_INTEGRITY</p>
-                <h2 class="text-4xl font-bold mb-6 italic">PBOM</h2>
+                <h2 class="text-4xl font-bold mb-6 italic">Build Chain of Custody (BCoC)</h2>
                 <p class="text-slate-400 mb-8 leading-relaxed">
-                    Pipeline Bill of Materials. An SBOM tells you what is inside the artifact. A PBOM tells you <strong class="text-sky-400">how it got there</strong>. Cryptographic lineage from commit to production with zero developer friction.
+                    An SBOM tells you what is inside the artifact. A BCoC tells you <strong class="text-sky-400">who built it, how it was built, and every hand it passed through</strong> from commit to production. Built on the Pipeline Bill of Materials (PBOM) concept with cryptographic lineage and compliance framework mappings.
                 </p>
                 <div class="space-y-4 text-sm mono text-slate-300 mb-8">
                     <div class="flex gap-4"><span class="text-sky-500">01</span> 3-Phase Lineage &mdash; Source, Build, Promotion</div>
@@ -329,7 +329,7 @@
                     </div>
                 </div>
                 <div class="flex gap-6">
-                    <a href="/product/pbom.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Full Product Details &rarr;</a>
+                    <a href="/product/bcoc.html" class="text-sky-400 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">Full Product Details &rarr;</a>
                     <a href="/blog/why-sbom-isnt-enough.html" class="text-slate-500 text-xs font-bold uppercase mono tracking-widest hover:text-sky-300 transition">SBOM vs PBOM &rarr;</a>
                 </div>
             </div>
@@ -356,7 +356,7 @@
             <div class="p-8 border border-slate-800 rounded-2xl bg-slate-900/30">
                 <h4 class="text-sky-400 font-bold mb-4 mono text-sm uppercase tracking-wider">Security Guardrails</h4>
                 <ul class="text-slate-500 text-sm space-y-3">
-                    <li>PBOM chain-of-custody tracking</li>
+                    <li>BCoC chain-of-custody tracking</li>
                     <li>SBOM generation (CycloneDX/SPDX)</li>
                     <li>Secret scanning &amp; linting hooks</li>
                     <li>Vulnerability gates (Trivy/Snyk)</li>
@@ -416,7 +416,7 @@
                 <p class="text-slate-500 text-sm mb-6">For organizations in federal or highly regulated spaces requiring absolute chain-of-custody and forensic-grade audits.</p>
                 <ul class="text-[10px] text-slate-600 mono space-y-2 uppercase tracking-widest mb-8">
                     <li>+ NIST 800-161 / FedRAMP Alignment</li>
-                    <li>+ Advanced PBOM Tooling</li>
+                    <li>+ Advanced BCoC Tooling</li>
                     <li>+ Dedicated Engineering Support</li>
                     <li>+ Audit Forensics</li>
                 </ul>
@@ -536,7 +536,7 @@
                     <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Product</h4>
                     <ul class="text-xs text-slate-500 space-y-3 mono">
                         <li><a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a></li>
-                        <li><a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a></li>
+                        <li><a href="/product/bcoc.html" class="hover:text-sky-400 transition">BCoC</a></li>
                         <li><a href="/product/pricing.html" class="hover:text-sky-400 transition">Pricing</a></li>
                         <li><a href="/product/downloads.html" class="hover:text-sky-400 transition">Downloads</a></li>
                         <li><a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">CLI Docs</a></li>
@@ -547,18 +547,19 @@
                 <div>
                     <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Resources</h4>
                     <ul class="text-xs text-slate-500 space-y-3 mono">
-                        <li><a href="/blog/" class="hover:text-sky-400 transition">Blog</a></li>
+                        <li><a href="/blog/" class="hover:text-sky-400 transition">Insights</a></li>
                         <li><a href="/research/" class="hover:text-sky-400 transition">Research</a></li>
                         <li><a href="/whitepapers/sovereign-pipeline.html" class="hover:text-sky-400 transition">Whitepaper</a></li>
-                        <li><a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Documentation</a></li>
+                        <li><a href="/book.html" class="hover:text-sky-400 transition">Book</a></li>
+                        <li><a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Company</h4>
                     <ul class="text-xs text-slate-500 space-y-3 mono">
+                        <li><a href="/#consulting" class="hover:text-sky-400 transition">Advisory</a></li>
                         <li><a href="mailto:advisory@buildflowlabs.com" class="hover:text-sky-400 transition">Contact</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition">A.O.E. Holdings</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition">Security</a></li>
+                        <li><a href="/capabilities/" class="hover:text-sky-400 transition">A.O.E. Holdings</a></li>
                     </ul>
                 </div>
             </div>

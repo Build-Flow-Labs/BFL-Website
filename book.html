@@ -32,11 +32,11 @@
             </a>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
-                <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
-                <a href="/#consulting" class="hover:text-sky-400 transition">Advisory</a>
+                <a href="/product/bcoc.html" class="hover:text-sky-400 transition">BCoC</a>
+                <a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a>
+                <a href="/book.html" class="text-sky-400 transition">Book</a>
                 <a href="/research/" class="hover:text-sky-400 transition">Research</a>
                 <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
-                <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Docs</a>
             </div>
             <a href="mailto:advisory@buildflowlabs.com?subject=Book%20Waitlist" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Join Waitlist</a>
             <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
@@ -48,12 +48,12 @@
     </nav>
     <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
         <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
-        <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
-        <a href="/#consulting" class="hover:text-sky-400 transition">Advisory</a>
+        <a href="/product/bcoc.html" class="hover:text-sky-400 transition">BCoC</a>
+        <a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a>
+        <a href="/book.html" class="text-sky-400 transition">Book</a>
         <a href="/research/" class="hover:text-sky-400 transition">Research</a>
         <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
-        <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Docs</a>
-        <a href="mailto:advisory@buildflowlabs.com?subject=Book%20Waitlist" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Join Waitlist</a>
+        <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
     </div>
     <script>
         const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
@@ -63,14 +63,14 @@
     <!-- Hero -->
     <header class="max-w-5xl mx-auto px-6 pt-24 pb-16 text-center">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-sky-500/20 bg-sky-500/5 rounded-full">
-            <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Coming Soon</span>
+            <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Coming Soon &mdash; Leanpub &amp; Amazon</span>
         </div>
         <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6 gradient-text">Pipeline Trust</h1>
-        <p class="text-2xl text-slate-400 mb-4 italic">A Practitioner's Guide to Verifiable Software Supply Chains</p>
+        <p class="text-xl md:text-2xl text-slate-400 mb-4 italic max-w-3xl mx-auto">Automating Trust and Engineering Compliance in the Modern Software Supply Chain</p>
         <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10">
-            From the creator of BuildFlow Trust and PBOM. The definitive guide to implementing zero-trust CI/CD, cryptographic attestation, and build environment governance.
+            From the founder of Build Flow Labs and creator of the Build Chain of Custody (BCoC) evidence standard. The definitive guide to zero-trust build governance.
         </p>
-        <a href="mailto:advisory@buildflowlabs.com?subject=Book%20Waitlist&body=I'd%20like%20to%20join%20the%20waitlist%20for%20Pipeline%20Trust." class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-8 py-4 rounded-full font-bold transition inline-block text-lg">Join the Waitlist</a>
+        <a href="mailto:advisory@buildflowlabs.com?subject=Pipeline%20Trust%20Waitlist" class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-8 py-4 rounded-full font-bold transition inline-block text-lg">Join the Waitlist</a>
     </header>
 
     <main class="max-w-5xl mx-auto px-6 pb-32">
@@ -91,65 +91,72 @@
             <div>
                 <h2 class="text-2xl font-bold mb-6">The Missing Manual for Supply Chain Security</h2>
                 <p class="text-slate-400 leading-relaxed mb-6">
-                    Your SBOM lists the ingredients. But who verified the kitchen was clean? <span class="text-sky-400 font-semibold">Pipeline Trust</span> is the field guide for engineering leaders and security practitioners who need to move beyond compliance theater to actual, verifiable integrity.
+                    Your SBOM tells you what's inside the artifact. It tells you nothing about how it was built.
+                </p>
+                <p class="text-slate-400 leading-relaxed mb-6">
+                    In a 60-day research pilot across 30 repositories, <span class="text-sky-400 font-semibold">67% had configurations vulnerable to software supply chain compromise</span>. Only 12% would have triggered a compliance alert. That is 55% of risk completely invisible to existing governance.
                 </p>
                 <p class="text-slate-500 leading-relaxed">
-                    Based on real-world implementations, peer-reviewed research, and hard lessons from production incidents. This book bridges the gap between academic frameworks and the messy reality of securing modern CI/CD.
+                    <span class="text-slate-200 font-semibold">Pipeline Trust</span> introduces a zero-trust framework for build pipeline governance built on four principles: Invisible Security, Forensic Attestation via Build Chain of Custody (BCoC), Blast Radius Control, and Compliance as Code. Grounded in original doctoral research and real-world remediation experience, this book provides the framework, tools, and compliance mappings to bring structured governance to the most important and least protected surface in your software delivery lifecycle.
                 </p>
             </div>
         </section>
 
         <!-- Table of Contents -->
         <section class="mb-24 border-t border-slate-800 pt-16">
-            <h2 class="text-2xl font-bold mb-8 text-center">Table of Contents <span class="text-slate-600 text-lg">(Preview)</span></h2>
+            <h2 class="text-2xl font-bold mb-8 text-center">Table of Contents</h2>
             <div class="max-w-2xl mx-auto space-y-4">
                 <div class="flex justify-between items-center py-4 border-b border-slate-800">
                     <div>
-                        <span class="text-sky-400 mono text-sm mr-4">Part I</span>
-                        <span class="text-slate-200 font-bold">The Trust Problem</span>
+                        <span class="text-sky-400 mono text-sm mr-4">Part 1</span>
+                        <span class="text-slate-200 font-bold">The Invisible Attack Surface</span>
                     </div>
                 </div>
                 <div class="pl-8 space-y-3 text-slate-500 text-sm pb-4 border-b border-slate-800/50">
-                    <div class="flex justify-between"><span>1. Why Your SBOM Isn't Enough</span><span class="mono text-slate-700">Ch 1</span></div>
-                    <div class="flex justify-between"><span>2. The Anatomy of a Supply Chain Attack</span><span class="mono text-slate-700">Ch 2</span></div>
-                    <div class="flex justify-between"><span>3. Zero-Trust for CI/CD: Principles to Practice</span><span class="mono text-slate-700">Ch 3</span></div>
+                    <div>Ch 1: The Build Pipeline Is the New Perimeter</div>
+                    <div>Ch 2: 67% Vulnerable, 12% Detected: The Compliance Gap</div>
+                    <div>Ch 3: Anatomy of a Supply Chain Attack: From SolarWinds to Trivy</div>
                 </div>
 
                 <div class="flex justify-between items-center py-4 border-b border-slate-800">
                     <div>
-                        <span class="text-sky-400 mono text-sm mr-4">Part II</span>
-                        <span class="text-slate-200 font-bold">The PBOM Framework</span>
+                        <span class="text-sky-400 mono text-sm mr-4">Part 2</span>
+                        <span class="text-slate-200 font-bold">The Framework &mdash; Automating Trust</span>
                     </div>
                 </div>
                 <div class="pl-8 space-y-3 text-slate-500 text-sm pb-4 border-b border-slate-800/50">
-                    <div class="flex justify-between"><span>4. Designing the Pipeline Bill of Materials</span><span class="mono text-slate-700">Ch 4</span></div>
-                    <div class="flex justify-between"><span>5. Cryptographic Attestation with Sigstore</span><span class="mono text-slate-700">Ch 5</span></div>
-                    <div class="flex justify-between"><span>6. Policy-as-Code with OPA and Rego</span><span class="mono text-slate-700">Ch 6</span></div>
+                    <div>Ch 4: Zero-Trust for Build Environments</div>
+                    <div>Ch 5: Invisible Security: Compliance as a Side Effect of Shipping Code</div>
+                    <div>Ch 6: Build Chain of Custody (BCoC): Forensic Attestation for Every Build</div>
+                    <div>Ch 7: From SBOM to BCoC: Why Ingredient Lists Are Not Enough</div>
                 </div>
 
                 <div class="flex justify-between items-center py-4 border-b border-slate-800">
                     <div>
-                        <span class="text-sky-400 mono text-sm mr-4">Part III</span>
-                        <span class="text-slate-200 font-bold">Implementation</span>
+                        <span class="text-sky-400 mono text-sm mr-4">Part 3</span>
+                        <span class="text-slate-200 font-bold">Implementation &mdash; Engineering Compliance</span>
                     </div>
                 </div>
                 <div class="pl-8 space-y-3 text-slate-500 text-sm pb-4 border-b border-slate-800/50">
-                    <div class="flex justify-between"><span>7. Hardening GitHub Actions</span><span class="mono text-slate-700">Ch 7</span></div>
-                    <div class="flex justify-between"><span>8. Hardening GitLab CI</span><span class="mono text-slate-700">Ch 8</span></div>
-                    <div class="flex justify-between"><span>9. OIDC, Secrets, and the Credential Problem</span><span class="mono text-slate-700">Ch 9</span></div>
-                    <div class="flex justify-between"><span>10. Golden Images and Runner Security</span><span class="mono text-slate-700">Ch 10</span></div>
+                    <div>Ch 8: Compliance as Code: Policy Engines with OPA and Rego</div>
+                    <div>Ch 9: Building a Compliance Drift Detection System in Go</div>
+                    <div>Ch 10: OIDC, Short-Lived Tokens, and Eliminating Persistent Access</div>
+                    <div>Ch 11: GitHub Actions Security: A Practical Hardening Guide</div>
+                    <div>Ch 12: Blast Radius Control: Forensic Lookups Across Thousands of Repos</div>
+                    <div>Ch 13: The Enterprise Blueprint: Deploying Continuous Compliance in Days</div>
                 </div>
 
                 <div class="flex justify-between items-center py-4 border-b border-slate-800">
                     <div>
-                        <span class="text-sky-400 mono text-sm mr-4">Part IV</span>
-                        <span class="text-slate-200 font-bold">Governance</span>
+                        <span class="text-sky-400 mono text-sm mr-4">Part 4</span>
+                        <span class="text-slate-200 font-bold">Governance &mdash; Mapping to the Real World</span>
                     </div>
                 </div>
                 <div class="pl-8 space-y-3 text-slate-500 text-sm pb-4">
-                    <div class="flex justify-between"><span>11. Build Environment Risk Management</span><span class="mono text-slate-700">Ch 11</span></div>
-                    <div class="flex justify-between"><span>12. EO 14028 and Federal Compliance</span><span class="mono text-slate-700">Ch 12</span></div>
-                    <div class="flex justify-between"><span>13. Making the Business Case</span><span class="mono text-slate-700">Ch 13</span></div>
+                    <div>Ch 14: Compliance Mapping: SOC 2, SOX, NIST, ISO, PCI-DSS, FedRAMP, CIS, HIPAA</div>
+                    <div>Ch 15: Automating Audit Readiness</div>
+                    <div>Ch 16: Building a Supply Chain Security Program from Scratch</div>
+                    <div>Ch 17: The Future of Build Environment Security</div>
                 </div>
             </div>
         </section>
@@ -164,7 +171,7 @@
                 </div>
                 <h2 class="text-2xl font-bold mb-4">About the Author</h2>
                 <p class="text-slate-400 leading-relaxed mb-6">
-                    <span class="text-slate-200 font-semibold">Amina Emenena</span> is the founder of Build Flow Labs and creator of the PBOM framework. Her research on build environment risk governance earned Best Paper of Track at the ASBBS 33rd Annual Conference. She works with organizations to implement zero-trust CI/CD and verifiable software supply chains.
+                    <span class="text-slate-200 font-semibold">Amina Emenena</span> is a D.Sc. candidate in Cybersecurity at George Washington University's School of Engineering and Applied Sciences, where her research on build environment risk governance was awarded Best Paper of Track at the ASBBS 33rd Annual Conference. She is the founder of Build Flow Labs, creator of the Build Chain of Custody (BCoC) evidence standard, and holds over 15 years of technical and engineering leadership experience including leading remediation for a major platform breach, unmanned aircraft software development, and an Intelligence Community engineering background.
                 </p>
                 <a href="/speaking.html" class="text-sky-400 hover:text-sky-300 font-bold transition">Book Amina to Speak &rarr;</a>
             </div>

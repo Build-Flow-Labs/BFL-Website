@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PBOM | Pipeline Bill of Materials | Build Flow Labs</title>
-    <meta name="description" content="PBOM: Track how artifacts reach production. Cryptographic pipeline lineage across GitHub Actions and Kargo with zero developer friction.">
+    <title>Build Chain of Custody (BCoC) | Build Flow Labs</title>
+    <meta name="description" content="Build Chain of Custody (BCoC): Track how artifacts reach production. Cryptographic pipeline lineage across GitHub Actions and Kargo with zero developer friction. Built on the Pipeline Bill of Materials (PBOM) concept.">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta property="og:title" content="PBOM | Pipeline Bill of Materials">
+    <meta property="og:title" content="Build Chain of Custody (BCoC) | Build Flow Labs">
     <meta property="og:description" content="Track how artifacts reach production. Cryptographic pipeline lineage across GitHub Actions and Kargo with zero developer friction.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://buildflowlabs.com/product/pbom.html">
+    <meta property="og:url" content="https://buildflowlabs.com/product/bcoc.html">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PBOM | Pipeline Bill of Materials">
-    <meta name="twitter:description" content="An SBOM tells you what is inside the artifact. A PBOM tells you how it got there.">
+    <meta name="twitter:title" content="Build Chain of Custody (BCoC) | Build Flow Labs">
+    <meta name="twitter:description" content="An SBOM tells you what is inside the artifact. A BCoC tells you who built it, how it was built, and every hand it passed through.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -39,11 +39,11 @@
             </a>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                 <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
-                <a href="/product/pbom.html" class="text-sky-400 transition">PBOM</a>
-                <a href="/#consulting" class="hover:text-sky-400 transition">Advisory</a>
+                <a href="/product/bcoc.html" class="text-sky-400 transition">BCoC</a>
+                <a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a>
+                <a href="/book.html" class="hover:text-sky-400 transition">Book</a>
                 <a href="/research/" class="hover:text-sky-400 transition">Research</a>
                 <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
-                <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Docs</a>
             </div>
             <a href="mailto:advisory@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
             <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
@@ -55,11 +55,11 @@
     </nav>
     <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
         <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
-        <a href="/product/pbom.html" class="text-sky-400 transition">PBOM</a>
-        <a href="/#consulting" class="hover:text-sky-400 transition">Advisory</a>
+        <a href="/product/bcoc.html" class="text-sky-400 transition">BCoC</a>
+        <a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a>
+        <a href="/book.html" class="hover:text-sky-400 transition">Book</a>
         <a href="/research/" class="hover:text-sky-400 transition">Research</a>
         <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
-        <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Docs</a>
         <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
     </div>
     <script>
@@ -78,11 +78,11 @@
                 <span class="text-[10px] font-bold text-sky-400 mono tracking-widest uppercase">Pipeline Integrity</span>
             </div>
             <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-4 gradient-text">
-                Pipeline Bill of Materials
+                Build Chain of Custody
             </h1>
-            <p class="text-sm text-slate-500 mono uppercase tracking-widest mb-6">Also known as Build Chain of Custody (BCoC)</p>
+            <p class="text-sm text-slate-500 mono uppercase tracking-widest mb-6">BCoC &mdash; Built on the Pipeline Bill of Materials (PBOM) concept</p>
             <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-4 leading-relaxed">
-                An SBOM tells you what is inside the artifact. A PBOM tells you <strong class="text-sky-400">how it got there</strong>.
+                An SBOM tells you what is inside the artifact. A BCoC tells you <strong class="text-sky-400">who built it, how it was built, and every hand it passed through</strong> from commit to production.
             </p>
             <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-8 leading-relaxed">
                 Cryptographic pipeline lineage across GitHub Actions and Kargo. Zero developer friction. Complete chain-of-custody from commit to production.
