@@ -37,9 +37,17 @@
     <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <a href="/" class="text-xl font-extrabold tracking-tighter mono text-slate-100">
-                BUILD<span class="text-sky-400">FLOW</span>LABS
+                BUILD<span class="text-sky-400 underline decoration-2 underline-offset-4">FLOW</span>LABS
             </a>
-            <a href="/" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-sky-400 transition">&larr; Home</a>
+            <div class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
+                <a href="/product/pbom.html" class="hover:text-sky-400 transition">PBOM</a>
+                <a href="/#consulting" class="hover:text-sky-400 transition">Advisory</a>
+                <a href="/research/" class="hover:text-sky-400 transition">Research</a>
+                <a href="/blog/" class="hover:text-sky-400 transition">Insights</a>
+                <a href="/docs/buildflow-trust-cli.html" class="hover:text-sky-400 transition">Docs</a>
+            </div>
+            <a href="mailto:advisory@buildflowlabs.com" class="hidden md:inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter transition">Request Access</a>
         </div>
     </nav>
 
