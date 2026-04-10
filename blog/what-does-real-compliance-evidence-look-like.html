@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Does Real Compliance Evidence Actually Look Like? | Build Flow Labs</title>
+    <meta name="description" content="Most build environments generate artifacts. Very few generate evidence. The difference is what matters when the auditor shows up.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="What Does Real Compliance Evidence Actually Look Like? | Build Flow Labs">
+    <meta property="og:description" content="Most build environments generate artifacts. Very few generate evidence. The difference is what matters when the auditor shows up.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://buildflowlabs.com/blog/what-does-real-compliance-evidence-look-like.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Does Real Compliance Evidence Actually Look Like? | Build Flow Labs">
+    <meta name="twitter:description" content="Most build environments generate artifacts. Very few generate evidence. The difference is what matters when the auditor shows up.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .border-subtle { border-color: rgba(30, 41, 59, 0.7); }
+        .prose { max-width: 65ch; line-height: 1.85; color: #94a3b8; }
+        .prose h2 { color: #f1f5f9; font-weight: 800; font-size: 1.75rem; margin-top: 3rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .prose h3 { color: #e2e8f0; font-weight: 700; font-size: 1.25rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .prose p { margin-bottom: 1.5rem; font-size: 1.0625rem; }
+        .prose strong { color: #38bdf8; font-weight: 600; }
+        .prose ul { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+        .prose ul li { padding-left: 1.5rem; position: relative; margin-bottom: 0.75rem; }
+        .prose ul li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; background: #38bdf8; border-radius: 50%; }
+        .prose blockquote { border-left: 3px solid #38bdf8; padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: #cbd5e1; }
+    </style>
+</head>
+<body class="text-slate-300 selection:bg-sky-500/30">
+
+    <nav class="sticky top-0 z-50 border-b border-subtle glass px-6 py-4">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-extrabold tracking-tighter mono text-slate-100">
+                BUILD<span class="text-sky-400">FLOW</span>LABS
+            </a>
+            <a href="/blog/" class="hidden sm:inline text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-sky-400 transition">&larr; All Posts</a>
+            <button id="menu-toggle" class="sm:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar1"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar2"></span>
+                <span class="block w-5 h-0.5 bg-slate-400 transition-all" id="bar3"></span>
+            </button>
+        </div>
+        <div id="mobile-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8 text-lg font-bold">
+            <a href="/product/buildflow-trust.html" class="hover:text-sky-400 transition">BuildFlow Trust</a>
+            <a href="/product/bcoc.html" class="hover:text-sky-400 transition">BCoC</a>
+            <a href="/speaking.html" class="hover:text-sky-400 transition">Speaking</a>
+            <a href="/book.html" class="hover:text-sky-400 transition">Book</a>
+            <a href="/research/" class="hover:text-sky-400 transition">Research</a>
+            <a href="/blog/" class="text-sky-400 transition">Insights</a>
+            <a href="mailto:advisory@buildflowlabs.com" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-full text-sm font-black uppercase tracking-tighter mt-4">Request Access</a>
+        </div>
+        <script>
+            const toggle=document.getElementById('menu-toggle'),menu=document.getElementById('mobile-menu'),b1=document.getElementById('bar1'),b2=document.getElementById('bar2'),b3=document.getElementById('bar3');let o=false;
+            toggle.addEventListener('click',()=>{o=!o;menu.classList.toggle('hidden');menu.classList.toggle('flex');b1.style.transform=o?'rotate(45deg) translate(3px,3px)':'';b2.style.opacity=o?'0':'1';b3.style.transform=o?'rotate(-45deg) translate(3px,-3px)':'';});
+        </script>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-20">
+
+        <header class="mb-16">
+            <div class="text-sky-500 mono text-xs font-bold uppercase tracking-widest mb-4">Zero Trust Fridays // Vol. 001 &mdash; Field Notes</div>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight mb-6">
+                What Does Real Compliance Evidence<br/>Actually Look Like?
+            </h1>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500">
+                <span>April 10, 2026</span>
+                <span>&middot;</span>
+                <span>5 min read</span>
+                <span>&middot;</span>
+                <span class="mono text-[10px] uppercase tracking-widest">Build Security</span>
+            </div>
+        </header>
+
+        <article class="prose mx-auto">
+
+            <p>I had a conversation this week with a major player in the DevSecOps space. They asked me what real compliance evidence looks like. Not the checkbox kind. The kind that holds up when an auditor or incident responder is standing in your room at 2am.</p>
+
+            <p>That question told me everything I needed to know about where the industry is right now.</p>
+
+            <p>The tooling is ahead of the understanding. Everyone is generating artifacts. Nobody has agreed on what makes an artifact meaningful.</p>
+
+            <h2>The Difference Between an Artifact and Evidence</h2>
+
+            <p>An artifact is a file your pipeline produced. Evidence is a file your pipeline produced, at a known point in time, from a known source, with a cryptographic signature that proves it has not been touched since.</p>
+
+            <p>Most teams have artifacts. Very few have evidence.</p>
+
+            <p>The distinction matters because artifacts answer the question "did this happen?" Evidence answers the question "can you prove it?" Those are not the same question. Auditors ask the second one. Incident responders ask the second one. The SEC asks the second one.</p>
+
+            <p>If your compliance posture is built on artifacts, you have documentation. That is not the same as a defensible record.</p>
+
+            <h2>What Automated Evidence Collection Actually Requires</h2>
+
+            <p>Build provenance is not a report. It is a chain. And like any chain it is only as strong as its weakest unverified link.</p>
+
+            <p>Real automated evidence collection in a build environment requires four things:</p>
+
+            <ul>
+                <li><strong>Every input must be identified and pinned.</strong> Dependencies, actions, base images. Everything that touches your build needs a cryptographic reference. Not a tag, not a version string, not a branch name. A SHA.</li>
+                <li><strong>Every transformation must be recorded automatically.</strong> What ran, when it ran, what it produced, what environment it ran in. Not a log file someone can edit after the fact. An attestation the pipeline generates and signs without human involvement.</li>
+                <li><strong>The record must be tamper-evident.</strong> If someone can delete the evidence after the fact, it is not evidence. It is a note.</li>
+                <li><strong>Collection must be continuous and automatic.</strong> A gap in the chain is the same as no chain. One unattested step breaks the whole story. And if evidence collection requires a human to remember to run something, it will eventually fail.</li>
+            </ul>
+
+            <p>Most build environments today satisfy maybe one of these. Some satisfy two. Very few satisfy all four. And almost none generate this evidence automatically as a byproduct of the build itself.</p>
+
+            <blockquote>Evidence that requires manual steps to produce is not really automated evidence. It is just documentation with extra effort.</blockquote>
+
+            <h2>Why This Matters Right Now</h2>
+
+            <p>Software supply chain attacks are not theoretical. They are happening at scale, targeting CI/CD infrastructure specifically, and succeeding because build environments have been treated as trusted by default for decades.</p>
+
+            <p>The Trivy supply chain attack earlier this year is a clean example. 75 out of 76 tags force-pushed with malicious content. Teams pinning to commit SHAs instead of tags would have been unaffected. Teams relying on tag references got hit.</p>
+
+            <p>Zero trust as a framework has been applied to networks, to identity, to endpoints. The build environment is the last major attack surface where implicit trust is still the default posture.</p>
+
+            <p>That is what this series is about. Every Friday I will be dropping practitioner notes from the field. What I am seeing, what I am building, and what the research says about where this is all going.</p>
+
+            <p>No fluff. No theory divorced from practice. Just the work.</p>
+
+            <p>Welcome to Zero Trust Fridays.</p>
+
+        </article>
+
+        <!-- CTA -->
+        <div class="mt-20 p-10 bg-sky-500/5 border border-sky-500/20 rounded-3xl text-center">
+            <h3 class="text-2xl font-bold mb-4">Ready to Verify Your Pipeline?</h3>
+            <p class="text-slate-400 mb-6 max-w-lg mx-auto">Build Flow Labs provides the frameworks and advisory to move your organization from implicit trust to verified integrity.</p>
+            <a href="mailto:advisory@buildflowlabs.com?subject=Advisory%20Inquiry" class="bg-sky-500 text-slate-950 px-8 py-3 rounded-lg font-bold hover:bg-sky-400 transition inline-block">Book Advisory</a>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-slate-800 py-12 px-6 bg-slate-950 mt-20">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="/blog/" class="mono text-[10px] text-slate-600 uppercase tracking-[0.2em] hover:text-sky-400 transition">
+                &larr; Back to The Laboratory
+            </a>
+            <span class="text-[10px] text-slate-700 mono uppercase tracking-widest">&copy; 2026 A.O.E. Holdings Group LLC</span>
+        </div>
+    </footer>
+
+</body>
+</html>
